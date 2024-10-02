@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1df301d-0ab8-491a-9e84-f8650eb6988e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/BaseShape.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Canvas.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Line.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/MainApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Rectangle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Toolbar.java" afterDir="false" />
-    </list>
+    <list default="true" id="a1df301d-0ab8-491a-9e84-f8650eb6988e" name="Changes" comment="241002 first version without layer class," />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,12 +62,41 @@
       <option name="presentableId" value="Default" />
       <updated>1727832455890</updated>
       <workItem from="1727832457919" duration="3273000" />
-      <workItem from="1727836059990" duration="674000" />
+      <workItem from="1727836059990" duration="1014000" />
     </task>
+    <task id="LOCAL-00001" summary="241002 first version without layer class,">
+      <option name="closed" value="true" />
+      <created>1727837102234</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727837102234</updated>
+    </task>
+    <task id="LOCAL-00002" summary="241002 first version without layer class,">
+      <option name="closed" value="true" />
+      <created>1727837107638</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727837107638</updated>
+    </task>
+    <task id="LOCAL-00003" summary="241002 first version without layer class,">
+      <option name="closed" value="true" />
+      <created>1727837122639</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727837122639</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="241002 first version without layer class," />
+    <option name="LAST_COMMIT_MESSAGE" value="241002 first version without layer class," />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
