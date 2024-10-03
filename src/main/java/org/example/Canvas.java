@@ -11,9 +11,12 @@ public class Canvas extends JPanel {
     private List<BaseShape> shapes;
     private String currentTool = "select";
     private BaseShape tempShape;
+    private BaseShape copiedShape;
+    private JLabel statusBar;
 
-    public Canvas() {
+    public Canvas(LayerManager layerManager, JLabel statusBar) {
         shapes = new ArrayList<>();
+        this.statusBar = statusBar;
 
         // Mouse Listener for drawing shapes
         addMouseListener(new MouseAdapter() {
@@ -35,9 +38,8 @@ public class Canvas extends JPanel {
 
     // Mouse event handlers
     private void handleMousePressed(MouseEvent e) {
-        // Depending on the current tool, create the appropriate shape
         if (currentTool.equals("line")) {
-            tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY()); // Instantiate org.example.Line
+            tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY());
         } else if (currentTool.equals("rectangle")) {
             tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY());
         }
@@ -45,33 +47,67 @@ public class Canvas extends JPanel {
 
     private void handleMouseDragged(MouseEvent e) {
         if (tempShape != null) {
-            tempShape.setEndCoordinates(e.getX(), e.getY());
+            tempShape.moveBy(e.getX() - tempShape.x2, e.getY() - tempShape.y2);
             repaint();
         }
     }
 
     private void handleMouseReleased(MouseEvent e) {
         if (tempShape != null) {
-            shapes.add(tempShape);  // Add the completed shape to the list
-            tempShape = null;  // Reset the temporary shape
+            shapes.add(tempShape);
+            tempShape = null;
+            updateStatusBar();
         }
     }
 
-    // Draw all shapes, including the shape currently being drawn (if any)
+    // Drawing all shapes, including the one being drawn
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (BaseShape shape : shapes) {
             shape.draw(g);
         }
-
         if (tempShape != null) {
             tempShape.draw(g);
         }
     }
 
-    // Method for the toolbar to set the current tool
+    // Copy, paste, delete functionalities
+    public void copyShape() {
+        if (!shapes.isEmpty()) {
+            copiedShape = shapes.get(shapes.size() - 1).copy();
+        }
+    }
+
+    public void pasteShape() {
+        if (copiedShape != null) {
+            copiedShape.moveBy(10, 10);
+            shapes.add(copiedShape);
+            updateStatusBar();
+            repaint();
+        }
+    }
+
+    public void deleteShape() {
+        if (!shapes.isEmpty()) {
+            shapes.remove(shapes.size() - 1);
+            updateStatusBar();
+            repaint();
+        }
+    }
+
+    public void openColorPicker() {
+        Color newColor = JColorChooser.showDialog(this, "Pick a Color", Color.BLACK);
+        if (newColor != null) {
+            BaseShape.setDefaultColor(newColor);
+        }
+    }
+
     public void setCurrentTool(String tool) {
         this.currentTool = tool;
     }
-} // <---- Make sure this closing brace is present to close the class
+
+    private void updateStatusBar() {
+        statusBar.setText(shapes.size() + " entities");
+    }
+}

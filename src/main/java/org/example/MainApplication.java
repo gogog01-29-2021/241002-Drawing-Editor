@@ -4,28 +4,36 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainApplication extends JFrame {
-    private Toolbar toolbar;
     private Canvas canvas;
+    private LayerManager layerManager;
+    private LayerPanel layerPanel;
+    private JLabel statusBar;
 
     public MainApplication() {
         setTitle("Shape Drawing Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1000, 600);
 
-        // Initialize canvas and toolbar
-        canvas = new Canvas();
-        toolbar = new Toolbar(canvas);
+        // Initialize layer manager and side panel
+        layerManager = new LayerManager();
+        statusBar = new JLabel("0 entities");
+        layerPanel = new LayerPanel(layerManager);
+        canvas = new Canvas(layerManager, statusBar);
 
-        // Layout setup: Add the toolbar and the canvas to the main window
-        getContentPane().add(toolbar, "North");
-        getContentPane().add(canvas, "Center");
+        // Create the toolbar
+        Toolbar toolbar = new Toolbar(canvas);
 
-        // Make the window visible
+        // Layout setup: Add the toolbar, canvas, and layer panel to the main window
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(toolbar, BorderLayout.NORTH);
+        getContentPane().add(canvas, BorderLayout.CENTER);
+        getContentPane().add(layerPanel, BorderLayout.EAST);
+        getContentPane().add(statusBar, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 
     public static void main(String[] args) {
-        // Start the application in the Event Dispatch Thread (EDT)
         SwingUtilities.invokeLater(() -> new MainApplication());
     }
 }

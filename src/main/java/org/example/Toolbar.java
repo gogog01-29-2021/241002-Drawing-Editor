@@ -1,48 +1,38 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Toolbar extends JPanel {
-    private JButton selectButton;
-    private JButton lineButton;
-    private JButton rectangleButton;
     private Canvas canvas;
 
-    // Constructor accepting the canvas
     public Toolbar(Canvas canvas) {
-        this.canvas = canvas;  // Link toolbar to canvas
+        this.canvas = canvas;
 
-        // Initialize buttons
-        selectButton = new JButton("Select");
-        lineButton = new JButton("Line");
-        rectangleButton = new JButton("Rectangle");
+        // Create buttons for tools
+        JButton selectButton = new JButton("Select");
+        JButton lineButton = new JButton("Line");
+        JButton rectangleButton = new JButton("Rectangle");
+        JButton copyButton = new JButton("Copy");
+        JButton pasteButton = new JButton("Paste");
+        JButton deleteButton = new JButton("Delete");
+        JButton colorPickerButton = new JButton("Change Color");
 
-        // Add buttons to toolbar
+        // Add action listeners to set the tool in the canvas
+        selectButton.addActionListener(e -> canvas.setCurrentTool("select"));
+        lineButton.addActionListener(e -> canvas.setCurrentTool("line"));
+        rectangleButton.addActionListener(e -> canvas.setCurrentTool("rectangle"));
+        copyButton.addActionListener(e -> canvas.copyShape());
+        pasteButton.addActionListener(e -> canvas.pasteShape());
+        deleteButton.addActionListener(e -> canvas.deleteShape());
+        colorPickerButton.addActionListener(e -> canvas.openColorPicker());
+
+        // Add buttons to the toolbar
         add(selectButton);
         add(lineButton);
         add(rectangleButton);
-
-        // Action Listeners for each tool
-        selectButton.addActionListener(new ToolActionListener("select"));
-        lineButton.addActionListener(new ToolActionListener("line"));
-        rectangleButton.addActionListener(new ToolActionListener("rectangle"));
-    }
-
-    // Inner class for handling tool selection
-    private class ToolActionListener implements ActionListener {
-        private String toolType;
-
-        public ToolActionListener(String toolType) {
-            this.toolType = toolType;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // When a tool is selected, tell the canvas to change the current tool
-            canvas.setCurrentTool(toolType);
-        }
+        add(copyButton);
+        add(pasteButton);
+        add(deleteButton);
+        add(colorPickerButton);
     }
 }

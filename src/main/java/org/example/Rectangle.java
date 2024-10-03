@@ -9,7 +9,12 @@ public class Rectangle extends BaseShape {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
+        g.setColor(color);
         g.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+    }
+
+    @Override
+    public BaseShape copy() {
+        return new Rectangle(x1, y1, x2, y2);
     }
 }
