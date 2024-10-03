@@ -15,7 +15,7 @@ public class Toolbar extends JPanel {
         JButton copyButton = new JButton("Copy");
         JButton pasteButton = new JButton("Paste");
         JButton deleteButton = new JButton("Delete");
-        JButton colorPickerButton = new JButton("Change Color");
+        JButton changeColorButton = new JButton("Change Color");
 
         // Add action listeners to set the tool in the canvas
         selectButton.addActionListener(e -> canvas.setCurrentTool("select"));
@@ -24,7 +24,7 @@ public class Toolbar extends JPanel {
         copyButton.addActionListener(e -> canvas.copyShape());
         pasteButton.addActionListener(e -> canvas.pasteShape());
         deleteButton.addActionListener(e -> canvas.deleteShape());
-        colorPickerButton.addActionListener(e -> canvas.openColorPicker());
+        changeColorButton.addActionListener(e -> canvas.openColorPicker());
 
         // Add buttons to the toolbar
         add(selectButton);
@@ -33,6 +33,6 @@ public class Toolbar extends JPanel {
         add(copyButton);
         add(pasteButton);
         add(deleteButton);
-        add(colorPickerButton);
+        add(changeColorButton);
     }
 }

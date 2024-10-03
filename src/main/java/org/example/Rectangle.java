@@ -1,10 +1,17 @@
 package org.example;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class Rectangle extends BaseShape {
-    public Rectangle(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2);
+    public Rectangle(int x1, int y1, int x2, int y2, Color color) {
+        super(x1, y1, x2, y2, color);
+    }
+
+    @Override
+    public void setEndCoordinates(int x2, int y2) {
+        this.x2 = x2;
+        this.y2 = y2;
     }
 
     @Override
@@ -15,6 +22,6 @@ public class Rectangle extends BaseShape {
 
     @Override
     public BaseShape copy() {
-        return new Rectangle(x1, y1, x2, y2);
+        return new Rectangle(x1, y1, x2, y2, color);  // Return a new instance of Rectangle with the same coordinates and color
     }
 }

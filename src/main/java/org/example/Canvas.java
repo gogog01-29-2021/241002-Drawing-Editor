@@ -4,19 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Canvas extends JPanel {
-    private List<BaseShape> shapes;
     private String currentTool = "select";
     private BaseShape tempShape;
-    private BaseShape copiedShape;
+    private Color currentColor = Color.BLACK;
+    private LayerManager layerManager;
     private JLabel statusBar;
+    private LayerPanel layerPanel; // Reference to update the list
 
-    public Canvas(LayerManager layerManager, JLabel statusBar) {
-        shapes = new ArrayList<>();
+    public Canvas(LayerManager layerManager, JLabel statusBar, LayerPanel layerPanel) {
+        this.layerManager = layerManager;
         this.statusBar = statusBar;
+        this.layerPanel = layerPanel;
 
         // Mouse Listener for drawing shapes
         addMouseListener(new MouseAdapter() {
@@ -36,70 +36,51 @@ public class Canvas extends JPanel {
         });
     }
 
-    // Mouse event handlers
+    // Open color picker to change the color of new shapes
+    public void openColorPicker() {
+        Color newColor = JColorChooser.showDialog(this, "Pick a Color", currentColor);
+        if (newColor != null) {
+            currentColor = newColor;
+        }
+    }
+
     private void handleMousePressed(MouseEvent e) {
+        // Depending on the current tool, create the appropriate shape
         if (currentTool.equals("line")) {
-            tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY());
+            tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
         } else if (currentTool.equals("rectangle")) {
-            tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY());
+            tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
         }
     }
 
     private void handleMouseDragged(MouseEvent e) {
         if (tempShape != null) {
-            tempShape.moveBy(e.getX() - tempShape.x2, e.getY() - tempShape.y2);
+            tempShape.setEndCoordinates(e.getX(), e.getY());
             repaint();
         }
     }
 
     private void handleMouseReleased(MouseEvent e) {
         if (tempShape != null) {
-            shapes.add(tempShape);
-            tempShape = null;
+            // Add the completed shape as a new layer
+            layerManager.addShapeAsLayer(tempShape);
+            tempShape = null;  // Reset the temporary shape
             updateStatusBar();
+            repaint();
+            layerPanel.updateLayerList();  // Update the right-side panel with new object
         }
     }
 
-    // Drawing all shapes, including the one being drawn
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (BaseShape shape : shapes) {
+        // Draw all shapes (layers)
+        for (BaseShape shape : layerManager.getLayers()) {
             shape.draw(g);
         }
+
         if (tempShape != null) {
             tempShape.draw(g);
-        }
-    }
-
-    // Copy, paste, delete functionalities
-    public void copyShape() {
-        if (!shapes.isEmpty()) {
-            copiedShape = shapes.get(shapes.size() - 1).copy();
-        }
-    }
-
-    public void pasteShape() {
-        if (copiedShape != null) {
-            copiedShape.moveBy(10, 10);
-            shapes.add(copiedShape);
-            updateStatusBar();
-            repaint();
-        }
-    }
-
-    public void deleteShape() {
-        if (!shapes.isEmpty()) {
-            shapes.remove(shapes.size() - 1);
-            updateStatusBar();
-            repaint();
-        }
-    }
-
-    public void openColorPicker() {
-        Color newColor = JColorChooser.showDialog(this, "Pick a Color", Color.BLACK);
-        if (newColor != null) {
-            BaseShape.setDefaultColor(newColor);
         }
     }
 
@@ -107,7 +88,31 @@ public class Canvas extends JPanel {
         this.currentTool = tool;
     }
 
+    public void copyShape() {
+        if (layerManager.getActiveShape() != null) {
+            tempShape = layerManager.getActiveShape().copy();
+        }
+    }
+
+    public void pasteShape() {
+        if (tempShape != null) {
+            BaseShape copiedShape = tempShape.copy();
+            copiedShape.moveBy(10, 10); // Offset the shape for pasting
+            layerManager.addShapeAsLayer(copiedShape);
+            updateStatusBar();
+            repaint();
+            layerPanel.updateLayerList();  // Update the right-side panel with new object
+        }
+    }
+
+    public void deleteShape() {
+        layerManager.removeActiveShape();
+        updateStatusBar();
+        repaint();
+        layerPanel.updateLayerList();  // Update the right-side panel after deletion
+    }
+
     private void updateStatusBar() {
-        statusBar.setText(shapes.size() + " entities");
+        statusBar.setText(layerManager.getLayers().size() + " objects.");
     }
 }

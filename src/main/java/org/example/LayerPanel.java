@@ -1,14 +1,12 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 public class LayerPanel extends JPanel {
     private LayerManager layerManager;
     private JList<String> layerList;
     private DefaultListModel<String> listModel;
-    private JButton addLayerButton;
 
     public LayerPanel(LayerManager layerManager) {
         this.layerManager = layerManager;
@@ -18,17 +16,7 @@ public class LayerPanel extends JPanel {
         layerList = new JList<>(listModel);
         updateLayerList();
 
-        // Button to add a new layer
-        addLayerButton = new JButton("Add Layer");
-        addLayerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                layerManager.addNewLayer();
-                updateLayerList();
-            }
-        });
-
-        // List selection listener to change the current layer
+        // List selection listener to change the current layer (object)
         layerList.addListSelectionListener(e -> {
             int selectedIndex = layerList.getSelectedIndex();
             if (selectedIndex >= 0) {
@@ -39,14 +27,14 @@ public class LayerPanel extends JPanel {
         // Layout for the panel
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(new JScrollPane(layerList));
-        add(addLayerButton);
     }
 
     // Method to update the displayed layer list
-    private void updateLayerList() {
+    public void updateLayerList() {
         listModel.clear();
-        for (int i = 0; i < layerManager.getLayers().size(); i++) {
-            listModel.addElement("Layer " + (i + 1));
+        List<BaseShape> layers = layerManager.getLayers();
+        for (int i = 0; i < layers.size(); i++) {
+            listModel.addElement("Object " + (i + 1));  // Display each shape as "Object X"
         }
         layerList.setSelectedIndex(layerManager.getCurrentLayerIndex());
     }

@@ -5,30 +5,22 @@ import java.util.List;
 
 public class Layer {
     private List<BaseShape> shapes;
-    private boolean visible;
+    private String name;
 
-    public Layer() {
+    public Layer(String name) {
+        this.name = name;
         shapes = new ArrayList<>();
-        visible = true;
     }
 
     public List<BaseShape> getShapes() {
         return shapes;
     }
 
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
     public void addShape(BaseShape shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(BaseShape shape) {
-        shapes.remove(shape);
+    public String getName() {
+        return name;
     }
 }

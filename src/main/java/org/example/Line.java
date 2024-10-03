@@ -1,10 +1,17 @@
 package org.example;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class Line extends BaseShape {
-    public Line(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2);
+    public Line(int x1, int y1, int x2, int y2, Color color) {
+        super(x1, y1, x2, y2, color);
+    }
+
+    @Override
+    public void setEndCoordinates(int x2, int y2) {
+        this.x2 = x2;
+        this.y2 = y2;
     }
 
     @Override
@@ -15,6 +22,6 @@ public class Line extends BaseShape {
 
     @Override
     public BaseShape copy() {
-        return new Line(x1, y1, x2, y2);
+        return new Line(x1, y1, x2, y2, color);  // Return a new instance of Line with the same coordinates and color
     }
 }
