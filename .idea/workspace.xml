@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1df301d-0ab8-491a-9e84-f8650eb6988e" name="Changes" comment="241002 first version without layer class,">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Circle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/BaseShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/BaseShape.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Canvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Canvas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Layer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Layer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LayerManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LayerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LayerPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Line.java" afterDir="false" />
@@ -43,10 +43,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.MainApplication.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "2410032325backup-thirdwithoutlayerfunctionimplemented",
+    "git-widget-placeholder": "2410050712backup-forthobjectnumberfunctionimplemented",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -77,7 +78,7 @@
       <updated>1727832455890</updated>
       <workItem from="1727832457919" duration="3273000" />
       <workItem from="1727836059990" duration="10167000" />
-      <workItem from="1727962435171" duration="3640000" />
+      <workItem from="1727962435171" duration="9218000" />
     </task>
     <task id="LOCAL-00001" summary="241002 first version without layer class,">
       <option name="closed" value="true" />

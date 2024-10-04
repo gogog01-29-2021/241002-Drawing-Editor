@@ -4,45 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LayerManager {
-    private List<BaseShape> layers;  // Each "layer" corresponds to a shape
-    private int currentLayerIndex;
+    private List<Layer> layers;
+    private int currentLayerIndex;  // This tracks the currently selected layer
 
     public LayerManager() {
         layers = new ArrayList<>();
-        currentLayerIndex = -1;  // Start with no layer selected
+        addNewLayer();  // Add an initial layer
     }
 
-    // Add a new shape as a layer
-    public void addShapeAsLayer(BaseShape shape) {
-        layers.add(shape);  // Each shape becomes a new layer
-        currentLayerIndex = layers.size() - 1;  // Set the current layer to the new shape
+    // Add a new layer
+    public void addNewLayer() {
+        layers.add(new Layer("Layer " + (layers.size() + 1)));
+        currentLayerIndex = layers.size() - 1;  // Set the new layer as the current layer
     }
 
-    public BaseShape getActiveShape() {
-        if (currentLayerIndex >= 0 && currentLayerIndex < layers.size()) {
-            return layers.get(currentLayerIndex);  // Return the currently active shape
-        }
-        return null;
+    // Return the current active layer
+    public Layer getActiveLayer() {
+        return layers.get(currentLayerIndex);
     }
 
+    // Get the index of the currently active layer
+    public int getCurrentLayerIndex() {
+        return currentLayerIndex;
+    }
+
+    // Set the current layer index (e.g., when user selects a different layer)
     public void setCurrentLayerIndex(int index) {
         if (index >= 0 && index < layers.size()) {
             currentLayerIndex = index;
         }
     }
 
-    public int getCurrentLayerIndex() {
-        return currentLayerIndex;
-    }
-
-    public List<BaseShape> getLayers() {
+    // Get all layers
+    public List<Layer> getLayers() {
         return layers;
-    }
-
-    public void removeActiveShape() {
-        if (currentLayerIndex >= 0 && currentLayerIndex < layers.size()) {
-            layers.remove(currentLayerIndex);  // Remove the currently active shape
-            currentLayerIndex = layers.size() - 1;  // Set to the last layer
-        }
     }
 }

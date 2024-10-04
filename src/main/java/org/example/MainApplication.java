@@ -3,42 +3,29 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainApplication extends JFrame {
-    private Toolbar toolbar;
-    private Canvas canvas;
-    private LayerManager layerManager;
-    private LayerPanel layerPanel;
-    private JLabel statusBar;
-
-    public MainApplication() {
-        setTitle("Shape Drawing Application");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-
-        // Initialize LayerManager and LayerPanel
-        layerManager = new LayerManager();
-        layerPanel = new LayerPanel(layerManager);
-
-        // Create status bar
-        statusBar = new JLabel("0 objects.");
-
-        // Initialize canvas and toolbar, pass the required components
-        canvas = new Canvas(layerManager, statusBar, layerPanel);
-        toolbar = new Toolbar(canvas);
-
-        // Layout setup: Add the toolbar, canvas, and layer panel to the main window
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(toolbar, BorderLayout.NORTH);
-        getContentPane().add(canvas, BorderLayout.CENTER);
-        getContentPane().add(layerPanel, BorderLayout.EAST);
-        getContentPane().add(statusBar, BorderLayout.SOUTH);
-
-        // Make the window visible
-        setVisible(true);
-    }
-
+public class MainApplication {
     public static void main(String[] args) {
-        // Start the application in the Event Dispatch Thread (EDT)
-        SwingUtilities.invokeLater(() -> new MainApplication());
+        JFrame frame = new JFrame("Shape Drawing Application");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1000, 600);
+
+        LayerManager layerManager = new LayerManager();
+        JLabel statusBar = new JLabel("0 objects.");
+
+        // Canvas and Layer Panel
+        Canvas canvas = new Canvas(layerManager, statusBar);
+        LayerPanel layerPanel = new LayerPanel(layerManager, canvas);
+
+        // Toolbar setup
+        Toolbar toolbar = new Toolbar(canvas);
+
+        // Set up layout
+        frame.setLayout(new BorderLayout());
+        frame.add(toolbar, BorderLayout.NORTH);
+        frame.add(canvas, BorderLayout.CENTER);
+        frame.add(statusBar, BorderLayout.SOUTH);
+        frame.add(layerPanel, BorderLayout.EAST);  // Add the layer panel to the right side
+
+        frame.setVisible(true);
     }
 }

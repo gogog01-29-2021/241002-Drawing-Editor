@@ -1,41 +1,51 @@
 package org.example;
 
 import javax.swing.*;
-import java.util.List;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LayerPanel extends JPanel {
-    private LayerManager layerManager;
     private JList<String> layerList;
     private DefaultListModel<String> listModel;
+    private Canvas canvas;
 
-    public LayerPanel(LayerManager layerManager) {
-        this.layerManager = layerManager;
+    public LayerPanel(LayerManager layerManager, Canvas canvas) {
+        this.canvas = canvas;
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(150, 600));
+        setBackground(Color.LIGHT_GRAY);  // Make the panel slightly gray
 
-        // List to display layer names
         listModel = new DefaultListModel<>();
         layerList = new JList<>(listModel);
-        updateLayerList();
+        layerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // List selection listener to change the current layer (object)
-        layerList.addListSelectionListener(e -> {
-            int selectedIndex = layerList.getSelectedIndex();
-            if (selectedIndex >= 0) {
-                layerManager.setCurrentLayerIndex(selectedIndex);
+        // Update canvas when a layer is selected
+        layerList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedIndex = layerList.getSelectedIndex();
+                if (selectedIndex != -1) {
+                    canvas.highlightSelectedObject(selectedIndex);
+                }
             }
         });
 
-        // Layout for the panel
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new JScrollPane(layerList));
+        add(new JScrollPane(layerList), BorderLayout.CENTER);
     }
 
-    // Method to update the displayed layer list
-    public void updateLayerList() {
-        listModel.clear();
-        List<BaseShape> layers = layerManager.getLayers();
-        for (int i = 0; i < layers.size(); i++) {
-            listModel.addElement("Object " + (i + 1));  // Display each shape as "Object X"
+    public void addLayer(String layerName) {
+        listModel.addElement(layerName);
+    }
+
+    public void removeLayer(int index) {
+        listModel.remove(index);
+    }
+
+    public void updateLayerList(String[] layerNames) {
+        listModel.removeAllElements();
+        for (String name : layerNames) {
+            listModel.addElement(name);
         }
-        layerList.setSelectedIndex(layerManager.getCurrentLayerIndex());
     }
 }

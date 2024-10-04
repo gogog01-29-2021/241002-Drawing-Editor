@@ -9,19 +9,19 @@ public class Line extends BaseShape {
     }
 
     @Override
-    public void setEndCoordinates(int x2, int y2) {
-        this.x2 = x2;
-        this.y2 = y2;
-    }
-
-    @Override
     public void draw(Graphics g) {
         g.setColor(color);
         g.drawLine(x1, y1, x2, y2);
     }
 
     @Override
-    public BaseShape copy() {
-        return new Line(x1, y1, x2, y2, color);  // Return a new instance of Line with the same coordinates and color
+    public boolean contains(int x, int y) {
+        // Implement logic to check if the point (x, y) is close to this line
+        return Math.abs((y2 - y1) * (x - x1) - (x2 - x1) * (y - y1)) < 500; // Adjust sensitivity as needed
+    }
+
+    @Override
+    public Line copy() {
+        return new Line(x1, y1, x2, y2, color);
     }
 }
