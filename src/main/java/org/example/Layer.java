@@ -1,26 +1,29 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Layer {
+public class Layer implements Serializable {
     private List<BaseShape> shapes;
-    private String name;
 
-    public Layer(String name) {
-        this.name = name;
+    public Layer() {
         shapes = new ArrayList<>();
-    }
-
-    public List<BaseShape> getShapes() {
-        return shapes;
     }
 
     public void addShape(BaseShape shape) {
         shapes.add(shape);
     }
 
-    public String getName() {
-        return name;
+    public void removeShape(BaseShape shape) {
+        shapes.remove(shape);
+    }
+
+    public List<BaseShape> getShapes() {
+        return shapes;
+    }
+
+    public void setShapes(List<BaseShape> newShapes) {
+        this.shapes = newShapes;
     }
 }

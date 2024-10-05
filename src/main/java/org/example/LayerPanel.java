@@ -2,50 +2,35 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
 
 public class LayerPanel extends JPanel {
-    private JList<String> layerList;
-    private DefaultListModel<String> listModel;
     private Canvas canvas;
+    private LayerManager layerManager;
+    private JList<String> layerList;
 
     public LayerPanel(LayerManager layerManager, Canvas canvas) {
+        this.layerManager = layerManager;
         this.canvas = canvas;
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(150, 600));
-        setBackground(Color.LIGHT_GRAY);  // Make the panel slightly gray
 
-        listModel = new DefaultListModel<>();
-        layerList = new JList<>(listModel);
-        layerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        layerList = new JList<>(new DefaultListModel<>());
+        JScrollPane scrollPane = new JScrollPane(layerList);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Update canvas when a layer is selected
-        layerList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int selectedIndex = layerList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    canvas.highlightSelectedObject(selectedIndex);
-                }
+        layerList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int index = layerList.getSelectedIndex();
+                canvas.highlightSelectedObject(index); // Ensure this is defined in Canvas
             }
         });
-
-        add(new JScrollPane(layerList), BorderLayout.CENTER);
     }
 
-    public void addLayer(String layerName) {
-        listModel.addElement(layerName);
-    }
-
-    public void removeLayer(int index) {
-        listModel.remove(index);
-    }
-
-    public void updateLayerList(String[] layerNames) {
-        listModel.removeAllElements();
-        for (String name : layerNames) {
-            listModel.addElement(name);
+    public void updateLayerList() {
+        DefaultListModel<String> model = (DefaultListModel<String>) layerList.getModel();
+        model.clear();
+        for (int i = 0; i < layerManager.getActiveLayer().getShapes().size(); i++) {
+            model.addElement("Object " + (i + 1));
         }
     }
 }

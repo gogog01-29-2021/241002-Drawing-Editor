@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.*;
+import java.util.List;
 
 public class Canvas extends JPanel {
     private String currentTool = "select";
     private BaseShape tempShape;
-    private BaseShape selectedShape;  // To store the selected shape for dragging or resizing
-    private Color currentColor = Color.BLACK;
-    private int lastX, lastY;  // To store the last mouse position for dragging
+    private BaseShape selectedShape;
+    private Color currentColor = BaseShape.getDefaultColor();
+    private int lastX, lastY;
     private LayerManager layerManager;
     private JLabel statusBar;
 
@@ -18,33 +20,36 @@ public class Canvas extends JPanel {
         this.layerManager = layerManager;
         this.statusBar = statusBar;
 
-        // Mouse Listener for drawing shapes
         addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 handleMousePressed(e);
             }
 
+            @Override
             public void mouseReleased(MouseEvent e) {
                 handleMouseReleased(e);
             }
         });
 
         addMouseMotionListener(new MouseAdapter() {
+            @Override
             public void mouseDragged(MouseEvent e) {
                 handleMouseDragged(e);
             }
         });
     }
 
-    public void openColorPicker() {
-        Color newColor = JColorChooser.showDialog(this, "Pick a Color", currentColor);
-        if (newColor != null) {
-            currentColor = newColor;
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
+            shape.draw(g);
         }
     }
 
+    // Methods for handling mouse interactions
     private void handleMousePressed(MouseEvent e) {
-        // Check if the user clicks on an existing shape
         for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
             if (shape.contains(e.getX(), e.getY())) {
                 selectedShape = shape;
@@ -65,11 +70,9 @@ public class Canvas extends JPanel {
     }
 
     private void handleMouseDragged(MouseEvent e) {
-        // While dragging to draw a new shape
         if (tempShape != null) {
             tempShape.setEndCoordinates(e.getX(), e.getY());
         } else if (selectedShape != null) {
-            // Move the selected shape
             selectedShape.moveBy(e.getX() - lastX, e.getY() - lastY);
             lastX = e.getX();
             lastY = e.getY();
@@ -81,37 +84,35 @@ public class Canvas extends JPanel {
         if (tempShape != null) {
             // Add the completed shape to the active layer
             layerManager.getActiveLayer().addShape(tempShape);
-            tempShape = null;  // Reset the temporary shape
+            tempShape = null; // Reset the temporary shape
             updateStatusBar();
         }
         repaint();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        // Draw all shapes
-        for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
-            shape.draw(g);
+    // Button actions
+    public void save() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("shapes.dat"))) {
+            out.writeObject(layerManager.getActiveLayer().getShapes());
+            JOptionPane.showMessageDialog(null, "Shapes saved successfully!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error saving shapes: " + ex.getMessage());
         }
+    }
 
-        // Highlight selected shape
-        if (selectedShape != null) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(Color.RED); // Highlight color
-            g2d.setStroke(new BasicStroke(3)); // Thicker stroke for highlighting
-            selectedShape.draw(g2d); // Re-draw the selected shape with highlighting
-        }
-
-        // Draw the temporary shape (during drawing)
-        if (tempShape != null) {
-            tempShape.draw(g);
+    public void load() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("shapes.dat"))) {
+            List<BaseShape> shapes = (List<BaseShape>) in.readObject();
+            layerManager.getActiveLayer().setShapes(shapes); // FIX THIS METHOD
+            repaint();
+            JOptionPane.showMessageDialog(null, "Shapes loaded successfully!");
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error loading shapes: " + ex.getMessage());
         }
     }
 
     public void setCurrentTool(String tool) {
-        this.currentTool = tool;
+        currentTool = tool;
     }
 
     public void copyShape() {
@@ -123,7 +124,7 @@ public class Canvas extends JPanel {
     public void pasteShape() {
         if (tempShape != null) {
             BaseShape copiedShape = tempShape.copy();
-            copiedShape.moveBy(10, 10); // Offset the shape for pasting
+            copiedShape.moveBy(10, 10); // Move the pasted shape slightly
             layerManager.getActiveLayer().addShape(copiedShape);
             updateStatusBar();
             repaint();
@@ -132,21 +133,30 @@ public class Canvas extends JPanel {
 
     public void deleteShape() {
         if (selectedShape != null) {
-            layerManager.getActiveLayer().getShapes().remove(selectedShape);
+            layerManager.getActiveLayer().removeShape(selectedShape);
             selectedShape = null;
             updateStatusBar();
             repaint();
         }
     }
 
-    public void highlightSelectedObject(int index) {
-        if (index >= 0 && index < layerManager.getActiveLayer().getShapes().size()) {
-            selectedShape = layerManager.getActiveLayer().getShapes().get(index);
-            repaint();
+    public void openColorPicker() {
+        Color newColor = JColorChooser.showDialog(this, "Pick a Color", currentColor);
+        if (newColor != null) {
+            currentColor = newColor;
+            BaseShape.setDefaultColor(newColor); // FIX THIS METHOD
         }
     }
 
     private void updateStatusBar() {
         statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
+    }
+
+    // Highlight a selected object
+    public void highlightSelectedObject(int index) {
+        if (index >= 0 && index < layerManager.getActiveLayer().getShapes().size()) {
+            selectedShape = layerManager.getActiveLayer().getShapes().get(index);
+            repaint(); // Redraw to reflect the selection
+        }
     }
 }

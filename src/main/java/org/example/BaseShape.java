@@ -1,9 +1,9 @@
 package org.example;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.io.Serializable;
 
-public abstract class BaseShape {
+public abstract class BaseShape implements Serializable {
     protected int x1, y1, x2, y2;
     protected Color color;
 
@@ -16,23 +16,16 @@ public abstract class BaseShape {
     }
 
     public abstract void draw(Graphics g);
-
-    public void setEndCoordinates(int x, int y) {
-        this.x2 = x;
-        this.y2 = y;
-    }
-
-    public boolean contains(int x, int y) {
-        // For now, return false; will be overridden in subclasses with specific logic
-        return false;
-    }
-
-    public void moveBy(int dx, int dy) {
-        x1 += dx;
-        y1 += dy;
-        x2 += dx;
-        y2 += dy;
-    }
-
+    public abstract boolean contains(int x, int y);
+    public abstract void setEndCoordinates(int x, int y);
+    public abstract void moveBy(int dx, int dy);
     public abstract BaseShape copy();
+
+    public static Color getDefaultColor() {
+        return Color.BLACK;  // Default color
+    }
+
+    public static void setDefaultColor(Color color) {
+        // Logic to set default color for future shapes
+    }
 }

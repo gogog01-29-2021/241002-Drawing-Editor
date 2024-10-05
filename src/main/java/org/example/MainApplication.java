@@ -3,29 +3,38 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainApplication {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Shape Drawing Application");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 600);
+public class MainApplication extends JFrame {
+    private LayerManager layerManager = new LayerManager();
+    private JLabel statusBar = new JLabel("0 objects.");
 
-        LayerManager layerManager = new LayerManager();
-        JLabel statusBar = new JLabel("0 objects.");
+    public MainApplication() {
+        setTitle("Shape Drawing Application");
+        setSize(900, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Canvas and Layer Panel
+        // Set layout and add components
+        setLayout(new BorderLayout());
+
+        // Create the canvas and layer panel
         Canvas canvas = new Canvas(layerManager, statusBar);
         LayerPanel layerPanel = new LayerPanel(layerManager, canvas);
-
-        // Toolbar setup
         Toolbar toolbar = new Toolbar(canvas);
 
-        // Set up layout
-        frame.setLayout(new BorderLayout());
-        frame.add(toolbar, BorderLayout.NORTH);
-        frame.add(canvas, BorderLayout.CENTER);
-        frame.add(statusBar, BorderLayout.SOUTH);
-        frame.add(layerPanel, BorderLayout.EAST);  // Add the layer panel to the right side
+        // Add components to the frame
+        add(toolbar, BorderLayout.NORTH);       // Toolbar at the top
+        add(layerPanel, BorderLayout.EAST);     // Layer panel at the right
+        add(canvas, BorderLayout.CENTER);       // Canvas in the center
 
-        frame.setVisible(true);
+        // Set canvas drawing area white
+        canvas.setBackground(Color.WHITE);
+
+        // Add a status bar at the bottom
+        add(statusBar, BorderLayout.SOUTH);
+    }
+
+    public static void main(String[] args) {
+        // Create and show the application window
+        MainApplication app = new MainApplication();
+        app.setVisible(true);
     }
 }

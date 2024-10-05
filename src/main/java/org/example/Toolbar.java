@@ -2,31 +2,25 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Toolbar extends JPanel {
-    private Canvas canvas;
-
     public Toolbar(Canvas canvas) {
-        this.canvas = canvas;
-        setBackground(Color.LIGHT_GRAY);
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.setBackground(Color.LIGHT_GRAY);
 
-        JButton saveButton = createButton("Save");
-        JButton loadButton = createButton("Load");
-        JButton lineButton = createButton("Line");
-        JButton rectangleButton = createButton("Rectangle");
-        JButton circleButton = createButton("Circle");
-        JButton copyButton = createButton("Copy");
-        JButton pasteButton = createButton("Paste");
-        JButton deleteButton = createButton("Delete");
-        JButton changeColorButton = createButton("Change Color");
+        JButton saveButton = new JButton("Save");
+        JButton loadButton = new JButton("Load");
+        JButton lineButton = new JButton("Line");
+        JButton rectangleButton = new JButton("Rectangle");
+        JButton circleButton = new JButton("Circle");
+        JButton copyButton = new JButton("Copy");
+        JButton pasteButton = new JButton("Paste");
+        JButton deleteButton = new JButton("Delete");
+        JButton changeColorButton = new JButton("Change Color");
 
-        saveButton.addActionListener(e -> saveCanvas());
-        loadButton.addActionListener(e -> loadCanvas());
-
+        // Button actions
+        saveButton.addActionListener(e -> canvas.save());
+        loadButton.addActionListener(e -> canvas.load());
         lineButton.addActionListener(e -> canvas.setCurrentTool("line"));
         rectangleButton.addActionListener(e -> canvas.setCurrentTool("rectangle"));
         circleButton.addActionListener(e -> canvas.setCurrentTool("circle"));
@@ -35,42 +29,15 @@ public class Toolbar extends JPanel {
         deleteButton.addActionListener(e -> canvas.deleteShape());
         changeColorButton.addActionListener(e -> canvas.openColorPicker());
 
-        add(saveButton);
-        add(loadButton);
-        add(lineButton);
-        add(rectangleButton);
-        add(circleButton);
-        add(copyButton);
-        add(pasteButton);
-        add(deleteButton);
-        add(changeColorButton);
-    }
-
-    private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(100, 30));
-
-        // Add hover effect
-        button.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) {
-                button.setBackground(Color.DARK_GRAY);
-            }
-
-            public void mouseExited(MouseEvent evt) {
-                button.setBackground(UIManager.getColor("control"));
-            }
-        });
-
-        return button;
-    }
-
-    private void saveCanvas() {
-        // TODO: Implement save functionality
-        System.out.println("Save Canvas");
-    }
-
-    private void loadCanvas() {
-        // TODO: Implement load functionality
-        System.out.println("Load Canvas");
+        // Adding buttons to the toolbar
+        this.add(saveButton);
+        this.add(loadButton);
+        this.add(lineButton);
+        this.add(rectangleButton);
+        this.add(circleButton);
+        this.add(copyButton);
+        this.add(pasteButton);
+        this.add(deleteButton);
+        this.add(changeColorButton);
     }
 }

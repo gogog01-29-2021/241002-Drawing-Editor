@@ -1,42 +1,28 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LayerManager {
+public class LayerManager implements Serializable {
     private List<Layer> layers;
-    private int currentLayerIndex;  // This tracks the currently selected layer
+    private int activeLayerIndex;
 
     public LayerManager() {
         layers = new ArrayList<>();
-        addNewLayer();  // Add an initial layer
+        layers.add(new Layer());  // Start with one layer
+        activeLayerIndex = 0;
     }
 
-    // Add a new layer
-    public void addNewLayer() {
-        layers.add(new Layer("Layer " + (layers.size() + 1)));
-        currentLayerIndex = layers.size() - 1;  // Set the new layer as the current layer
-    }
-
-    // Return the current active layer
     public Layer getActiveLayer() {
-        return layers.get(currentLayerIndex);
+        return layers.get(activeLayerIndex);
     }
 
-    // Get the index of the currently active layer
+    public void setActiveLayer(int index) {
+        activeLayerIndex = index;
+    }
+
     public int getCurrentLayerIndex() {
-        return currentLayerIndex;
-    }
-
-    // Set the current layer index (e.g., when user selects a different layer)
-    public void setCurrentLayerIndex(int index) {
-        if (index >= 0 && index < layers.size()) {
-            currentLayerIndex = index;
-        }
-    }
-
-    // Get all layers
-    public List<Layer> getLayers() {
-        return layers;
+        return activeLayerIndex;
     }
 }

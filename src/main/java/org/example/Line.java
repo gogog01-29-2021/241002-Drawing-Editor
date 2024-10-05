@@ -1,7 +1,6 @@
 package org.example;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class Line extends BaseShape {
     public Line(int x1, int y1, int x2, int y2, Color color) {
@@ -15,13 +14,27 @@ public class Line extends BaseShape {
     }
 
     @Override
-    public boolean contains(int x, int y) {
-        // Implement logic to check if the point (x, y) is close to this line
-        return Math.abs((y2 - y1) * (x - x1) - (x2 - x1) * (y - y1)) < 500; // Adjust sensitivity as needed
+    public void setEndCoordinates(int x, int y) {
+        this.x2 = x;
+        this.y2 = y;
     }
 
     @Override
-    public Line copy() {
+    public boolean contains(int x, int y) {
+        // Basic line containment check, can be enhanced
+        return Math.abs((x2 - x1) * (y - y1) - (y2 - y1) * (x - x1)) < 1000;
+    }
+
+    @Override
+    public BaseShape copy() {
         return new Line(x1, y1, x2, y2, color);
+    }
+
+    @Override
+    public void moveBy(int dx, int dy) {
+        x1 += dx;
+        y1 += dy;
+        x2 += dx;
+        y2 += dy;
     }
 }
