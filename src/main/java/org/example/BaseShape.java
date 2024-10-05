@@ -6,6 +6,7 @@ import java.io.Serializable;
 public abstract class BaseShape implements Serializable {
     protected int x1, y1, x2, y2;
     protected Color color;
+    private static Color defaultColor = Color.BLACK;
 
     public BaseShape(int x1, int y1, int x2, int y2, Color color) {
         this.x1 = x1;
@@ -22,10 +23,10 @@ public abstract class BaseShape implements Serializable {
     public abstract BaseShape copy();
 
     public static Color getDefaultColor() {
-        return Color.BLACK;  // Default color
+        return defaultColor;
     }
 
-    public static void setDefaultColor(Color color) {
-        // Logic to set default color for future shapes
+    public static void setDefaultColor(Color newColor) {
+        defaultColor = newColor;
     }
 }

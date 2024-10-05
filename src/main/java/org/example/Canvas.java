@@ -20,6 +20,8 @@ public class Canvas extends JPanel {
         this.layerManager = layerManager;
         this.statusBar = statusBar;
 
+        setBackground(Color.WHITE);
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -48,7 +50,6 @@ public class Canvas extends JPanel {
         }
     }
 
-    // Methods for handling mouse interactions
     private void handleMousePressed(MouseEvent e) {
         for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
             if (shape.contains(e.getX(), e.getY())) {
@@ -59,7 +60,6 @@ public class Canvas extends JPanel {
             }
         }
 
-        // If no shape is selected, create a new shape
         if (currentTool.equals("line")) {
             tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
         } else if (currentTool.equals("rectangle")) {
@@ -82,32 +82,30 @@ public class Canvas extends JPanel {
 
     private void handleMouseReleased(MouseEvent e) {
         if (tempShape != null) {
-            // Add the completed shape to the active layer
             layerManager.getActiveLayer().addShape(tempShape);
-            tempShape = null; // Reset the temporary shape
+            tempShape = null;
             updateStatusBar();
         }
         repaint();
     }
 
-    // Button actions
     public void save() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("shapes.dat"))) {
             out.writeObject(layerManager.getActiveLayer().getShapes());
-            JOptionPane.showMessageDialog(null, "Shapes saved successfully!");
+            JOptionPane.showMessageDialog(this, "Shapes saved successfully!");
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error saving shapes: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error saving shapes: " + ex.getMessage());
         }
     }
 
     public void load() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("shapes.dat"))) {
             List<BaseShape> shapes = (List<BaseShape>) in.readObject();
-            layerManager.getActiveLayer().setShapes(shapes); // FIX THIS METHOD
+            layerManager.getActiveLayer().setShapes(shapes);
             repaint();
-            JOptionPane.showMessageDialog(null, "Shapes loaded successfully!");
+            JOptionPane.showMessageDialog(this, "Shapes loaded successfully!");
         } catch (IOException | ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Error loading shapes: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error loading shapes: " + ex.getMessage());
         }
     }
 
@@ -124,7 +122,7 @@ public class Canvas extends JPanel {
     public void pasteShape() {
         if (tempShape != null) {
             BaseShape copiedShape = tempShape.copy();
-            copiedShape.moveBy(10, 10); // Move the pasted shape slightly
+            copiedShape.moveBy(10, 10);
             layerManager.getActiveLayer().addShape(copiedShape);
             updateStatusBar();
             repaint();
@@ -144,7 +142,7 @@ public class Canvas extends JPanel {
         Color newColor = JColorChooser.showDialog(this, "Pick a Color", currentColor);
         if (newColor != null) {
             currentColor = newColor;
-            BaseShape.setDefaultColor(newColor); // FIX THIS METHOD
+            BaseShape.setDefaultColor(newColor);
         }
     }
 
@@ -152,11 +150,10 @@ public class Canvas extends JPanel {
         statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
     }
 
-    // Highlight a selected object
     public void highlightSelectedObject(int index) {
         if (index >= 0 && index < layerManager.getActiveLayer().getShapes().size()) {
             selectedShape = layerManager.getActiveLayer().getShapes().get(index);
-            repaint(); // Redraw to reflect the selection
+            repaint();
         }
     }
 }

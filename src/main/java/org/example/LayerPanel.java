@@ -2,7 +2,6 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class LayerPanel extends JPanel {
     private Canvas canvas;
@@ -14,6 +13,9 @@ public class LayerPanel extends JPanel {
         this.canvas = canvas;
         setLayout(new BorderLayout());
 
+        // Darker gray background for the layer panel
+        setBackground(Color.DARK_GRAY);
+
         layerList = new JList<>(new DefaultListModel<>());
         JScrollPane scrollPane = new JScrollPane(layerList);
         add(scrollPane, BorderLayout.CENTER);
@@ -21,7 +23,7 @@ public class LayerPanel extends JPanel {
         layerList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int index = layerList.getSelectedIndex();
-                canvas.highlightSelectedObject(index); // Ensure this is defined in Canvas
+                canvas.highlightSelectedObject(index);
             }
         });
     }
