@@ -1,95 +1,117 @@
 package org.example;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class Toolbar extends JPanel {
-    private JButton saveButton, loadButton, lineButton, rectangleButton, circleButton, copyButton, pasteButton, deleteButton, changeColorButton;
-    private Canvas canvas;
 
-    public Toolbar(Canvas canvas) {
-        this.canvas = canvas;
+    public Toolbar(JComponent canvas, JLabel statusBar) {
+        setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        // Set layout for the panel
-        setLayout(new BorderLayout());
+        // Create buttons with icons
+        JButton copyButton = createButton("Copy", "images/copy.png");
+        JButton pasteButton = createButton("Paste", "images/paste.png");
+        JButton deleteButton = createButton("Delete", "images/delete.png");
+        JButton groupButton = createButton("Group", "images/group.png");
 
-        // Create panel to hold buttons and set layout to BoxLayout (compact horizontal layout)
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        // Divider between groups
+        JSeparator separator1 = createSeparator();
 
-        // Create buttons and replace with icons only (no text)
-        saveButton = createButtonWithIcon("/images/draws/save.png");
-        loadButton = createButtonWithIcon("/images/draws/file.png");
-        lineButton = createButtonWithIcon("/images/draws/line.png");
-        rectangleButton = createButtonWithIcon("/images/draws/rectangle.png");
-        circleButton = createButtonWithIcon("/images/draws/ellipse.png");
-        copyButton = createButtonWithIcon("/images/draws/copy.png");
-        pasteButton = createButtonWithIcon("/images/draws/paste.png");
-        deleteButton = createButtonWithIcon("/images/draws/delete.png");
-        changeColorButton = createButtonWithIcon("/images/draws/color.png");
+        JButton curveButton = createButton("", "images/draws/line.png");
+        JButton circleButton = createButton("", "images/draws/ellipse.png");
+        JButton rectangleButton = createButton("", "images/draws/rectangle.png");
+        JButton lineButton = createButton("Line", null);
 
-        // Add buttons to the buttonPanel
-        buttonPanel.add(saveButton);
-        buttonPanel.add(loadButton);
-        buttonPanel.add(lineButton);
-        buttonPanel.add(rectangleButton);
-        buttonPanel.add(circleButton);
-        buttonPanel.add(copyButton);
-        buttonPanel.add(pasteButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(changeColorButton);
+        // Divider between groups
+        JSeparator separator2 = createSeparator();
 
-        // Add action listeners to buttons
-        saveButton.addActionListener(e -> canvas.save());
-        loadButton.addActionListener(e -> canvas.load());
-        lineButton.addActionListener(e -> canvas.setCurrentTool("line"));
-        rectangleButton.addActionListener(e -> canvas.setCurrentTool("rectangle"));
-        circleButton.addActionListener(e -> canvas.setCurrentTool("circle"));
-        copyButton.addActionListener(e -> canvas.copyShape());
-        pasteButton.addActionListener(e -> canvas.pasteShape());
-        deleteButton.addActionListener(e -> canvas.deleteShape());
-        changeColorButton.addActionListener(e -> canvas.openColorPicker());
+        JButton undoButton = createButton("", "images/undo.png");
+        JButton redoButton = createButton("", "images/redo.png");
 
-        // Add hover effect to the buttons (change background on hover)
-        addHoverEffect(saveButton);
-        addHoverEffect(loadButton);
-        addHoverEffect(lineButton);
-        addHoverEffect(rectangleButton);
-        addHoverEffect(circleButton);
+        // Add buttons and dividers to the toolbar
+        add(copyButton);
+        add(pasteButton);
+        add(deleteButton);
+        add(groupButton);
+        add(separator1);  // Add first divider
+        add(curveButton);
+        add(circleButton);
+        add(rectangleButton);
+        add(lineButton);
+        add(separator2);  // Add second divider
+        add(undoButton);
+        add(redoButton);
+
+        // Add hover effects to buttons
         addHoverEffect(copyButton);
         addHoverEffect(pasteButton);
         addHoverEffect(deleteButton);
-        addHoverEffect(changeColorButton);
+        addHoverEffect(groupButton);
+        addHoverEffect(curveButton);
+        addHoverEffect(circleButton);
+        addHoverEffect(rectangleButton);
+        addHoverEffect(lineButton);
+        addHoverEffect(undoButton);
+        addHoverEffect(redoButton);
 
-        // Create a scrollable panel
-        JScrollPane scrollPane = new JScrollPane(buttonPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER); // Only horizontal scroll
-
-        // Add the scrollable panel to the toolbar
-        add(scrollPane, BorderLayout.CENTER);
+        // Add actions to buttons (example placeholder)
+        addAction(copyButton, () -> statusBar.setText("Copy clicked"));
+        addAction(pasteButton, () -> statusBar.setText("Paste clicked"));
+        addAction(deleteButton, () -> statusBar.setText("Delete clicked"));
+        addAction(lineButton, () -> statusBar.setText("Line clicked"));
     }
 
-    // Helper method to create button with icon only
-    private JButton createButtonWithIcon(String path) {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        JButton button = new JButton(icon);
-        button.setText(""); // Ensure no text is shown
-        button.setContentAreaFilled(false); // Makes the button more flat
-        button.setFocusPainted(false); // Removes the focus outline
-        button.setBorderPainted(false); // Removes the border
+    // Utility method to create a button with enforced padding and a visible border
+    private JButton createButton(String text, String iconPath) {
+        JButton button = new JButton();
+        if (iconPath != null) {
+            button.setIcon(new ImageIcon(iconPath));
+        }
+        button.setText(text);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.BOTTOM); // Text below the icon
+
+        // Set a visible border around the button and add padding using EmptyBorder
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),  // Button border
+                new EmptyBorder(5, 5, 5, 5)              // Padding inside the border
+        ));
+
+        button.setBackground(Color.WHITE);  // Set a white background for the button
+
         return button;
     }
 
-    // Helper method to add hover effect to the buttons
+    // Utility method to add a visible separator
+    private JSeparator createSeparator() {
+        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+        separator.setPreferredSize(new Dimension(5, 40));  // Increased width for better visibility
+        separator.setForeground(Color.BLACK);  // Set separator color
+        separator.setOpaque(true);            // Ensure separator is not transparent
+        return separator;
+    }
+
+    // Utility method to add actions to a button
+    private void addAction(JButton button, Runnable action) {
+        button.addActionListener(e -> action.run());
+    }
+
+    // Utility method to add hover effects to a button
     private void addHoverEffect(JButton button) {
+        Color defaultColor = button.getBackground();
+        button.setOpaque(true);
+        button.setBorderPainted(true);  // Ensure the border is painted
+
         button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(Color.LIGHT_GRAY);
+                button.setBackground(Color.LIGHT_GRAY); // Change background on hover
             }
 
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(UIManager.getColor("control"));
+                button.setBackground(defaultColor); // Reset to default after hover
             }
         });
     }

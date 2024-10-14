@@ -1,84 +1,41 @@
 package org.example;
-
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class MainApplication {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
+        // Create and set up the main application frame
         JFrame frame = new JFrame("Shape Drawing Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
+        frame.setLayout(new BorderLayout()); // Set layout manager
 
+        // Layer manager to handle layers of shapes
         LayerManager layerManager = new LayerManager();
+
+        // Status bar at the bottom to show information about objects
         JLabel statusBar = new JLabel("0 objects.");
+
+        // Canvas for drawing shapes, linked to the layer manager and status bar
         Canvas canvas = new Canvas(layerManager, statusBar);
 
-        // Create toolbar
-        JToolBar toolbar = new JToolBar();
-        toolbar.setFloatable(false); // Make the toolbar fixed
-
-        // Add buttons
-        JButton saveButton = new JButton("Save");
-        JButton loadButton = new JButton("Load");
-        JButton lineButton = new JButton("Line");
-        JButton rectangleButton = new JButton("Rectangle");
-        JButton circleButton = new JButton("Circle");
-        JButton copyButton = new JButton("Copy");
-        JButton pasteButton = new JButton("Paste");
-        JButton deleteButton = new JButton("Delete");
-        JButton changeColorButton = new JButton("Change Color");
-
-        // Add hover effects
-        addHoverEffect(saveButton);
-        addHoverEffect(loadButton);
-        addHoverEffect(lineButton);
-        addHoverEffect(rectangleButton);
-        addHoverEffect(circleButton);
-        addHoverEffect(copyButton);
-        addHoverEffect(pasteButton);
-        addHoverEffect(deleteButton);
-        addHoverEffect(changeColorButton);
-
-        // Add buttons to toolbar
-        toolbar.add(saveButton);
-        toolbar.add(loadButton);
-        toolbar.add(lineButton);
-        toolbar.add(rectangleButton);
-        toolbar.add(circleButton);
-        toolbar.add(copyButton);
-        toolbar.add(pasteButton);
-        toolbar.add(deleteButton);
-        toolbar.add(changeColorButton);
-
-        // Make toolbar scrollable
+        // Create the toolbar and make it scrollable
+        Toolbar toolbar = new Toolbar(canvas, statusBar);
         JScrollPane toolbarScrollPane = new JScrollPane(toolbar);
         toolbarScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        frame.add(toolbarScrollPane, BorderLayout.NORTH);
 
-        // Layer panel on the right
+        // Layer panel on the right to manage layers
         LayerPanel layerPanel = new LayerPanel(layerManager, canvas);
-        frame.add(layerPanel, BorderLayout.EAST);
 
-        // Add canvas and status bar
-        frame.add(canvas, BorderLayout.CENTER);
-        frame.add(statusBar, BorderLayout.SOUTH);
+        // Add components to the frame
+        frame.add(toolbarScrollPane, BorderLayout.NORTH);  // Toolbar at the top
+        frame.add(layerPanel, BorderLayout.EAST);          // Layer panel on the right
+        frame.add(canvas, BorderLayout.CENTER);            // Canvas in the center
+        frame.add(statusBar, BorderLayout.SOUTH);          // Status bar at the bottom
 
+        // Make the frame visible
         frame.setVisible(true);
-    }
-
-    // Helper method to add hover effect to buttons
-    private static void addHoverEffect(JButton button) {
-        Color defaultColor = button.getBackground();
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(Color.LIGHT_GRAY); // On hover
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(defaultColor); // Reset after hover
-            }
-        });
     }
 }
