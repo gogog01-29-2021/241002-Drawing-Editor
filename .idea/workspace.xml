@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1df301d-0ab8-491a-9e84-f8650eb6988e" name="Changes" comment="241002 first version without layer class,">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Toolbar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Toolbar.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +21,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -38,7 +41,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "denyscheckingout",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/w/Downloads/24-02/d struc/Dwawing editor241002",
     "node.js.detected.package.eslint": "true",
@@ -77,6 +80,7 @@
       <workItem from="1727836059990" duration="10167000" />
       <workItem from="1727962435171" duration="21595000" />
       <workItem from="1728538070282" duration="7141000" />
+      <workItem from="1729481180725" duration="660000" />
     </task>
     <task id="LOCAL-00001" summary="241002 first version without layer class,">
       <option name="closed" value="true" />

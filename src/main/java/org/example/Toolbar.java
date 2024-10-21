@@ -21,8 +21,8 @@ public class Toolbar extends JPanel {
 
         // File operations buttons
         JButton newFileButton = createButton("New", "images/new_file.png");
-        JButton saveFileButton = createButton("Save", "images/save_file.png");
-        JButton loadFileButton = createButton("Load", "images/load_file.png");
+        JButton saveFileButton = createButton("Save As", "images/save_file.png");
+        JButton loadFileButton = createButton("Open", "images/load_file.png");
 
         // Divider between groups
         JSeparator separator1 = createSeparator();
