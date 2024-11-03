@@ -10,18 +10,24 @@ public class Circle extends BaseShape {
 
     @Override
     public void draw(Graphics g) {
-        int diameter = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+        // Calculate center and radius
+        int centerX = (x1 + x2) / 2;
+        int centerY = (y1 + y2) / 2;
+        int radius = (int) Math.round(Point.distance(x1, y1, x2, y2) / 2);
+
+        // Set color and draw the circle
         g.setColor(color);
-        g.drawOval(Math.min(x1, x2), Math.min(y1, y2), diameter, diameter);
+        g.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
     }
 
     @Override
     public boolean contains(int x, int y) {
-        int radius = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
         int centerX = (x1 + x2) / 2;
         int centerY = (y1 + y2) / 2;
+        int radius = (int) Math.round(Point.distance(x1, y1, x2, y2) / 2);
         return (x - centerX) * (x - centerX) + (y - centerY) * (y - centerY) <= radius * radius;
     }
+
 
     @Override
     public void setEndCoordinates(int x, int y) {
