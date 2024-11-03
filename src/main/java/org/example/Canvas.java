@@ -42,14 +42,21 @@ public class Canvas extends JPanel {
         });
     }
 
+    // Override paintComponent to draw both permanent shapes and the placeholder line
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // Draw all permanent shapes
         for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
             shape.draw(g);
         }
-    }
 
+        // Draw the temporary shape (line preview) if it exists
+        if (tempShape != null) {
+            tempShape.draw(g);  // This shows the placeholder line while dragging
+        }
+    }
     private void handleMousePressed(MouseEvent e) {
         for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
             if (shape.contains(e.getX(), e.getY())) {

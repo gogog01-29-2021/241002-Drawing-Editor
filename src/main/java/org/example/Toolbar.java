@@ -10,6 +10,8 @@ import java.nio.file.Files;
 
 public class Toolbar extends JPanel {
 
+    private Line currentLine;
+
     public Toolbar(JComponent canvas, JLabel statusBar) {
         setLayout(new FlowLayout(FlowLayout.CENTER));
 
@@ -27,10 +29,10 @@ public class Toolbar extends JPanel {
         // Divider between groups
         JSeparator separator1 = createSeparator();
 
-        JButton curveButton = createButton("", "images/draws/line.png");
+        JButton lineButton = createButton("", "images/draws/line.png");
         JButton circleButton = createButton("", "images/draws/ellipse.png");
         JButton rectangleButton = createButton("", "images/draws/rectangle.png");
-        JButton lineButton = createButton("color", null);
+        JButton colorButton = createButton("color", null);
 
         // Divider between groups
         JSeparator separator2 = createSeparator();
@@ -47,10 +49,10 @@ public class Toolbar extends JPanel {
         add(saveFileButton);  // Add save file button
         add(loadFileButton);  // Add load file button
         add(separator1);  // Add first divider
-        add(curveButton);
         add(circleButton);
         add(rectangleButton);
         add(lineButton);
+        add(colorButton);
         add(separator2);  // Add second divider
         add(undoButton);
         add(redoButton);
@@ -63,7 +65,7 @@ public class Toolbar extends JPanel {
         addHoverEffect(newFileButton);  // Hover effect for new file button
         addHoverEffect(saveFileButton);  // Hover effect for save file button
         addHoverEffect(loadFileButton);  // Hover effect for load file button
-        addHoverEffect(curveButton);
+        addHoverEffect(colorButton);
         addHoverEffect(circleButton);
         addHoverEffect(rectangleButton);
         addHoverEffect(lineButton);
@@ -74,7 +76,18 @@ public class Toolbar extends JPanel {
         addAction(copyButton, () -> statusBar.setText("Copy clicked"));
         addAction(pasteButton, () -> statusBar.setText("Paste clicked"));
         addAction(deleteButton, () -> statusBar.setText("Delete clicked"));
-        addAction(lineButton, () -> statusBar.setText("Line clicked"));
+        addAction(lineButton, () -> {
+            statusBar.setText("Line tool selected");
+            ((Canvas) canvas).setCurrentTool("line");  // Set tool to line
+        });
+        addAction(circleButton, () -> {
+            statusBar.setText("Circle tool selected");
+            ((Canvas) canvas).setCurrentTool("circle");  // Set tool to line
+        });
+        addAction(rectangleButton, () -> {
+            statusBar.setText("Rectangle tool selected");
+            ((Canvas) canvas).setCurrentTool("rectangle");  // Set tool to line
+        });
 
         // Add actions for file operations
         addAction(newFileButton, () -> newFile(canvas, statusBar));
