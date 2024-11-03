@@ -7,6 +7,7 @@ public abstract class BaseShape implements Serializable {
     protected int x1, y1, x2, y2;
     protected Color color;
     private static Color defaultColor = Color.BLACK;
+    public abstract String getName();
 
     public BaseShape(int x1, int y1, int x2, int y2, Color color) {
         this.x1 = x1;

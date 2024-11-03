@@ -10,7 +10,7 @@ import java.nio.file.Files;
 
 public class Toolbar extends JPanel {
 
-    private Line currentLine;
+    private JButton activeToolButton = null;
 
     public Toolbar(JComponent canvas, JLabel statusBar) {
         setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -76,23 +76,34 @@ public class Toolbar extends JPanel {
         addAction(copyButton, () -> statusBar.setText("Copy clicked"));
         addAction(pasteButton, () -> statusBar.setText("Paste clicked"));
         addAction(deleteButton, () -> statusBar.setText("Delete clicked"));
-        addAction(lineButton, () -> {
-            statusBar.setText("Line tool selected");
-            ((Canvas) canvas).setCurrentTool("line");  // Set tool to line
-        });
-        addAction(circleButton, () -> {
-            statusBar.setText("Circle tool selected");
-            ((Canvas) canvas).setCurrentTool("circle");  // Set tool to line
-        });
-        addAction(rectangleButton, () -> {
-            statusBar.setText("Rectangle tool selected");
-            ((Canvas) canvas).setCurrentTool("rectangle");  // Set tool to line
-        });
+        lineButton.addActionListener(e -> toggleToolButton(lineButton, "line", canvas, statusBar));
+        circleButton.addActionListener(e -> toggleToolButton(circleButton, "circle", canvas, statusBar));
+        rectangleButton.addActionListener(e -> toggleToolButton(rectangleButton, "rectangle", canvas, statusBar));
 
         // Add actions for file operations
         addAction(newFileButton, () -> newFile(canvas, statusBar));
         addAction(saveFileButton, () -> saveFile(canvas, statusBar));
         addAction(loadFileButton, () -> loadFile(canvas, statusBar));
+    }
+
+    private void toggleToolButton(JButton button, String tool, JComponent canvas, JLabel statusBar) {
+        // If clicking the already active button, deactivate it
+        if (button == activeToolButton) {
+            button.setBackground(Color.WHITE);  // Reset to default color
+            activeToolButton = null;
+            statusBar.setText(tool.substring(0, 1).toUpperCase() + tool.substring(1) + " tool deselected");
+            ((Canvas) canvas).setCurrentTool(null);  // Deselect tool
+        } else {
+            // Deactivate the currently active tool, if any
+            if (activeToolButton != null) {
+                activeToolButton.setBackground(Color.WHITE);
+            }
+            // Activate the selected tool button
+            button.setBackground(Color.GRAY);  // Set to gray for active state
+            activeToolButton = button;
+            statusBar.setText(tool.substring(0, 1).toUpperCase() + tool.substring(1) + " tool selected");
+            ((Canvas) canvas).setCurrentTool(tool);  // Set the tool to the selected one
+        }
     }
 
     // Utility method to create a button with enforced padding and a visible border
@@ -134,17 +145,21 @@ public class Toolbar extends JPanel {
     private void addHoverEffect(JButton button) {
         Color defaultColor = button.getBackground();
         button.setOpaque(true);
-        button.setBorderPainted(true);  // Ensure the border is painted
+        button.setBorderPainted(true);
 
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(Color.LIGHT_GRAY); // Change background on hover
+                // Only change background if button is not active
+                if (button != activeToolButton) {
+                    button.setBackground(Color.LIGHT_GRAY);
+                }
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(defaultColor); // Reset to default after hover
+                // Reset to default color if not active, otherwise keep gray
+                button.setBackground(button == activeToolButton ? Color.GRAY : defaultColor);
             }
         });
     }

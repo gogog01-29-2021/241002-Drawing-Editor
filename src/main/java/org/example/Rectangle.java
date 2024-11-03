@@ -8,6 +8,9 @@ public class Rectangle extends BaseShape {
         super(x1, y1, x2, y2, color);
     }
 
+    public String getName() {
+        return "Circle";
+    }
     @Override
     public void draw(Graphics g) {
         g.setColor(color);

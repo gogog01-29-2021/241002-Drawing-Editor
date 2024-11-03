@@ -15,10 +15,12 @@ public class Canvas extends JPanel {
     private int lastX, lastY;
     private LayerManager layerManager;
     private JLabel statusBar;
+    private LayerPanel layerPanel;
 
-    public Canvas(LayerManager layerManager, JLabel statusBar) {
+    public Canvas(LayerManager layerManager, JLabel statusBar, LayerPanel layerPanel) {
         this.layerManager = layerManager;
         this.statusBar = statusBar;
+        this.layerPanel = layerPanel;
 
         setBackground(Color.WHITE);
 
@@ -90,6 +92,7 @@ public class Canvas extends JPanel {
     private void handleMouseReleased(MouseEvent e) {
         if (tempShape != null) {
             layerManager.getActiveLayer().addShape(tempShape);
+            layerPanel.updateLayerList();
             tempShape = null;
             updateStatusBar();
         }

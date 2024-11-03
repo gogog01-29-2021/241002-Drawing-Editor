@@ -8,6 +8,10 @@ public class Circle extends BaseShape {
         super(x1, y1, x2, y2, color);
     }
 
+    public String getName() {
+        return "Circle";
+    }
+
     @Override
     public void draw(Graphics g) {
         // Calculate center and radius
