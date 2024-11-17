@@ -9,7 +9,8 @@ git commit -m " "
 241117
 Java Drawing editor
 Chat GPT Prompt"After creating objectg and highlighting it I want to move it "
-
+"This functions still undefined"
+"update .java"
 
 
 A. Layer as Canvas Layer
