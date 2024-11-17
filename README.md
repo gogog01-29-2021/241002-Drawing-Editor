@@ -9,3 +9,16 @@ git commit -m " "
 241117
 Java Drawing editor
 Chat GPT Prompt"After creating objectg and highlighting it I want to move it "
+
+
+
+A. Layer as Canvas Layer
+I have problem now in my code, we can make new layer by adding layer but It is not really related with actual Drawing.
+If I click layer 1 and draw something in layer1, The objects should be only in layer 1.
+If I click layer2 It should be empty layer.
+
+If I click Layer1 and 2 together then both things should be show up together
+
+
+B.Layer as Object Layer
+
