@@ -11,6 +11,7 @@ Java Drawing editor
 Chat GPT Prompt"After creating objectg and highlighting it I want to move it "
 "This functions still undefined"
 "update .java"
+"Create new class of rectangle of which helps select "  : class SelectionRectangle
 
 
 A. Layer as Canvas Layer
