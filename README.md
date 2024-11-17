@@ -13,7 +13,7 @@ Chat GPT Prompt"After creating objectg and highlighting it I want to move it "
 "update .java"
 "Create new class of rectangle of which helps select "  : class SelectionRectangle
 "Give me full code of related version of this func"
-
+"When tool is not selected It should drag "
 
 A. Layer as Canvas Layer
 I have problem now in my code, we can make new layer by adding layer but It is not really related with actual Drawing.
