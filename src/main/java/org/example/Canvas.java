@@ -66,7 +66,8 @@ public class Canvas extends JPanel {
     }
 
     private void handleMousePressed(MouseEvent e) {
-        selectedShape = null; // Clear selection by default
+        // Attempt to select a shape first
+        selectedShape = null;
         for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
             if (shape.contains(e.getX(), e.getY())) {
                 selectedShape = shape;
@@ -76,23 +77,27 @@ public class Canvas extends JPanel {
             }
         }
 
-        // If no shape was selected, check the current tool for drawing
-        if (currentTool.equals("line")) {
-            tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-        } else if (currentTool.equals("rectangle")) {
-            tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-        } else if (currentTool.equals("circle")) {
-            tempShape = new Circle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+        // If no shape was selected and a drawing tool is active, create a new shape
+        if (currentTool != null) {
+            if (currentTool.equals("line")) {
+                tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+            } else if (currentTool.equals("rectangle")) {
+                tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+            } else if (currentTool.equals("circle")) {
+                tempShape = new Circle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+            }
         }
         repaint();
     }
 
     private void handleMouseDragged(MouseEvent e) {
-        if (currentTool.equals("select") && selectedShape != null) {
+        if (selectedShape != null) {
+            // Move the selected shape
             selectedShape.moveBy(e.getX() - lastX, e.getY() - lastY);
             lastX = e.getX();
             lastY = e.getY();
         } else if (tempShape != null) {
+            // Update the end coordinates for the temporary shape
             tempShape.setEndCoordinates(e.getX(), e.getY());
         }
         repaint();
@@ -170,14 +175,6 @@ public class Canvas extends JPanel {
             statusBar.setText("Selected: " + selectedShape.getName() + " at " + selectedShape.getBounds());
         } else {
             statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
-        }
-    }
-
-
-    public void highlightSelectedObject(int index) {
-        if (index >= 0 && index < layerManager.getActiveLayer().getShapes().size()) {
-            selectedShape = layerManager.getActiveLayer().getShapes().get(index);
-            repaint();
         }
     }
 }
