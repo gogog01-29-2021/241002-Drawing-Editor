@@ -31,7 +31,16 @@ public class Circle extends BaseShape {
         int radius = (int) Math.round(Point.distance(x1, y1, x2, y2) / 2);
         return (x - centerX) * (x - centerX) + (y - centerY) * (y - centerY) <= radius * radius;
     }
-
+    @Override
+    public void highlight(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.RED);
+        g2d.setStroke(new BasicStroke(2)); // Thicker stroke
+        int centerX = (x1 + x2) / 2;
+        int centerY = (y1 + y2) / 2;
+        int radius = (int) Math.round(Point.distance(x1, y1, x2, y2) / 2);
+        g2d.drawOval(centerX - radius - 2, centerY - radius - 2, radius * 2 + 4, radius * 2 + 4);
+    }
 
     @Override
     public void setEndCoordinates(int x, int y) {
@@ -51,4 +60,10 @@ public class Circle extends BaseShape {
     public BaseShape copy() {
         return new Circle(x1, y1, x2, y2, color);
     }
+    @Override
+    public String getBounds() {
+        int radius = (int) Math.hypot(x2 - x1, y2 - y1);
+        return "[Center: (" + x1 + ", " + y1 + "), Radius: " + radius + "]";
+    }
+
 }

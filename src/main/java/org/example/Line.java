@@ -8,7 +8,7 @@ public class Line extends BaseShape {
     }
 
     public String getName() {
-        return "Circle";
+        return "Line";
     }
     @Override
     public void draw(Graphics g) {
@@ -21,13 +21,15 @@ public class Line extends BaseShape {
         this.x2 = x;
         this.y2 = y;
     }
-
     @Override
     public boolean contains(int x, int y) {
-        // Basic line containment check, can be enhanced
-        return Math.abs((x2 - x1) * (y - y1) - (y2 - y1) * (x - x1)) < 1000;
+        double distance = Math.abs((x2 - x1) * (y1 - y) - (x1 - x) * (y2 - y1)) /
+                Math.hypot(x2 - x1, y2 - y1);
+        double tolerance = 5.0; // Adjust tolerance as needed
+        return distance <= tolerance &&
+                x >= Math.min(x1, x2) && x <= Math.max(x1, x2) &&
+                y >= Math.min(y1, y2) && y <= Math.max(y1, y2);
     }
-
     @Override
     public BaseShape copy() {
         return new Line(x1, y1, x2, y2, color);
@@ -40,4 +42,16 @@ public class Line extends BaseShape {
         x2 += dx;
         y2 += dy;
     }
+    @Override
+    public void highlight(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.RED);
+        g2d.setStroke(new BasicStroke(2)); // Thicker stroke
+        g2d.drawLine(x1, y1, x2, y2); // Could enhance with parallel lines
+    }
+    @Override
+    public String getBounds() {
+        return "[" + x1 + ", " + y1 + " to " + x2 + ", " + y2 + "]";
+    }
+
 }

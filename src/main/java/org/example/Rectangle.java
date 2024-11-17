@@ -9,7 +9,7 @@ public class Rectangle extends BaseShape {
     }
 
     public String getName() {
-        return "Circle";
+        return "Rectangle";
     }
     @Override
     public void draw(Graphics g) {
@@ -41,4 +41,20 @@ public class Rectangle extends BaseShape {
     public BaseShape copy() {
         return new Rectangle(x1, y1, x2, y2, color);
     }
+    @Override
+    public void highlight(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.RED); // Highlight color
+        g2d.setStroke(new BasicStroke(2)); // Thicker stroke
+        g2d.drawRect(Math.min(x1, x2) - 2, Math.min(y1, y2) - 2, Math.abs(x2 - x1) + 4, Math.abs(y2 - y1) + 4);
+    }
+    @Override
+    public String getBounds() {
+        int x = Math.min(x1, x2);
+        int y = Math.min(y1, y2);
+        int width = Math.abs(x2 - x1);
+        int height = Math.abs(y2 - y1);
+        return "[" + x + ", " + y + ", " + width + ", " + height + "]";
+    }
+
 }

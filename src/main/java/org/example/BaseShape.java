@@ -22,11 +22,11 @@ public abstract class BaseShape implements Serializable {
     public abstract void setEndCoordinates(int x, int y);
     public abstract void moveBy(int dx, int dy);
     public abstract BaseShape copy();
-
+    public abstract String getBounds();
+    public abstract void highlight(Graphics g);
     public static Color getDefaultColor() {
         return defaultColor;
     }
-
     public static void setDefaultColor(Color newColor) {
         defaultColor = newColor;
     }

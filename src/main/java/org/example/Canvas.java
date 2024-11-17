@@ -13,9 +13,9 @@ public class Canvas extends JPanel {
     private BaseShape selectedShape;
     private Color currentColor = BaseShape.getDefaultColor();
     private int lastX, lastY;
-    private LayerManager layerManager;
-    private JLabel statusBar;
-    private LayerPanel layerPanel;
+    private final LayerManager layerManager;
+    private final JLabel statusBar;
+    private final LayerPanel layerPanel;
 
     public Canvas(LayerManager layerManager, JLabel statusBar, LayerPanel layerPanel) {
         this.layerManager = layerManager;
@@ -54,12 +54,19 @@ public class Canvas extends JPanel {
             shape.draw(g);
         }
 
+        // Highlight the selected shape, if any
+        if (selectedShape != null) {
+            selectedShape.highlight(g);
+        }
+
         // Draw the temporary shape (line preview) if it exists
         if (tempShape != null) {
             tempShape.draw(g);  // This shows the placeholder line while dragging
         }
     }
+
     private void handleMousePressed(MouseEvent e) {
+        selectedShape = null; // Clear selection by default
         for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
             if (shape.contains(e.getX(), e.getY())) {
                 selectedShape = shape;
@@ -69,6 +76,7 @@ public class Canvas extends JPanel {
             }
         }
 
+        // If no shape was selected, check the current tool for drawing
         if (currentTool.equals("line")) {
             tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
         } else if (currentTool.equals("rectangle")) {
@@ -76,15 +84,16 @@ public class Canvas extends JPanel {
         } else if (currentTool.equals("circle")) {
             tempShape = new Circle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
         }
+        repaint();
     }
 
     private void handleMouseDragged(MouseEvent e) {
-        if (tempShape != null) {
-            tempShape.setEndCoordinates(e.getX(), e.getY());
-        } else if (selectedShape != null) {
+        if (currentTool.equals("select") && selectedShape != null) {
             selectedShape.moveBy(e.getX() - lastX, e.getY() - lastY);
             lastX = e.getX();
             lastY = e.getY();
+        } else if (tempShape != null) {
+            tempShape.setEndCoordinates(e.getX(), e.getY());
         }
         repaint();
     }
@@ -157,8 +166,13 @@ public class Canvas extends JPanel {
     }
 
     private void updateStatusBar() {
-        statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
+        if (selectedShape != null) {
+            statusBar.setText("Selected: " + selectedShape.getName() + " at " + selectedShape.getBounds());
+        } else {
+            statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
+        }
     }
+
 
     public void highlightSelectedObject(int index) {
         if (index >= 0 && index < layerManager.getActiveLayer().getShapes().size()) {

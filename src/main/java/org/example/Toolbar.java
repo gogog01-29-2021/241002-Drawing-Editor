@@ -39,6 +39,8 @@ public class Toolbar extends JPanel {
 
         JButton undoButton = createButton("", "images/undo.png");
         JButton redoButton = createButton("", "images/redo.png");
+        JButton selectButton = createButton("", "images/select.png");
+        selectButton.addActionListener(e -> toggleToolButton(selectButton, "select", canvas, statusBar));
 
         // Add buttons and dividers to the toolbar
         add(copyButton);
@@ -56,6 +58,7 @@ public class Toolbar extends JPanel {
         add(separator2);  // Add second divider
         add(undoButton);
         add(redoButton);
+        add(selectButton);
 
         // Add hover effects to buttons
         addHoverEffect(copyButton);

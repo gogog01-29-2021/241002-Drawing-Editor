@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fe29fc8-4ca3-4136-aceb-98dd9ecd9c32" name="Changes" comment="241002 first version without layer class,">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="2fe29fc8-4ca3-4136-aceb-98dd9ecd9c32" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/BaseShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/BaseShape.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Canvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Canvas.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Circle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Circle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LayerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LayerPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Line.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/MainApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Rectangle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Toolbar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Toolbar.java" afterDir="false" />
     </list>
@@ -29,9 +26,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -116,6 +113,7 @@
       <workItem from="1730598771705" duration="98000" />
       <workItem from="1730598873170" duration="12000" />
       <workItem from="1730598887802" duration="2036000" />
+      <workItem from="1731818316706" duration="1786000" />
     </task>
     <servers />
   </component>
