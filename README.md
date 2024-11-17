@@ -14,7 +14,7 @@ Chat GPT Prompt"After creating objectg and highlighting it I want to move it "
 "Create new class of rectangle of which helps select "  : class SelectionRectangle
 "Give me full code of related version of this func"
 "When tool is not selected It is not dragging, It should drag "
-
+"Point from which I am starting to Drag"
 A. Layer as Canvas Layer
 I have problem now in my code, we can make new layer by adding layer but It is not really related with actual Drawing.
 If I click layer 1 and draw something in layer1, The objects should be only in layer 1.
