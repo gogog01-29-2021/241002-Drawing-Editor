@@ -30,4 +30,12 @@ public abstract class BaseShape implements Serializable {
     public static void setDefaultColor(Color newColor) {
         defaultColor = newColor;
     }
+    public java.awt.Rectangle getBoundingBox(){
+        return new java.awt.Rectangle(
+                Math.min(x1,x2),
+                Math.min(y1,y2),
+                Math.abs(x2-x1),
+                Math.abs(y2-y1)
+        );
+    }
 }
