@@ -22,3 +22,8 @@ If I click Layer1 and 2 together then both things should be show up together
 
 B.Layer as Object Layer
 
+
+If there is no selection button,
+Problem
+1.untoggle status should be Drag or  
+2.
