@@ -2,7 +2,9 @@
 
 241120
 "If you receive it, the task will finish in 10 minutes. If you do not receive it, it will take 10 hours, and a new meeting will need to be scheduled."
-
+"Why is the work being carried out so frustratingly?"
+"Why is the task progressing so inefficiently?"
+"Why is this work so frustratingly slow?"
 # 241002-Drawing-Editor
 
 
