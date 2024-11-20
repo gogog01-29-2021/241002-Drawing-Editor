@@ -61,3 +61,5 @@ but if you call me, I don't know when to call back
 
 
 
+I am something very unpleasant with this situation. why I should fit with it.I am in a situation can't progress without your last checking.
+I feel very uncomfortable with this situation. Why should I put up with it? I can't make any progress without your final approval.
