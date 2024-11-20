@@ -1,7 +1,7 @@
 "I can't do my job on my own, so I have to keep waiting for your opinion."
 
-
-
+241120
+"If you receive it, the task will finish in 10 minutes. If you do not receive it, it will take 10 hours, and a new meeting will need to be scheduled."
 
 # 241002-Drawing-Editor
 
