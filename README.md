@@ -1,3 +1,8 @@
+"I can't do my job on my own, so I have to keep waiting for your opinion."
+
+
+
+
 # 241002-Drawing-Editor
 
 
