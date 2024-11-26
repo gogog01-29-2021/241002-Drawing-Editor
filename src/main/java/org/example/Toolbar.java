@@ -92,7 +92,7 @@ public class Toolbar extends JPanel {
             button.setBackground(Color.WHITE);  // Reset to default color
             activeToolButton = null;
             statusBar.setText(tool.substring(0, 1).toUpperCase() + tool.substring(1) + " tool deselected");
-            ((Canvas) canvas).setCurrentTool(null);  // Deselect tool
+            ((Canvas) canvas).setCurrentTool("select");  // Deselect tool
         } else {
             // Deactivate the currently active tool, if any
             if (activeToolButton != null) {
