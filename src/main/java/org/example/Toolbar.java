@@ -73,8 +73,10 @@ public class Toolbar extends JPanel {
         addHoverEffect(redoButton);
 
         // Add actions to buttons (example placeholder)
-        addAction(copyButton, () -> statusBar.setText("Copy clicked"));
-        addAction(pasteButton, () -> statusBar.setText("Paste clicked"));
+        addAction(copyButton, () -> {
+            ((Canvas) canvas).copyShape();
+        });
+        addAction(pasteButton, () -> ((Canvas) canvas).pasteShape());
         addAction(deleteButton, () -> statusBar.setText("Delete clicked"));
         lineButton.addActionListener(e -> toggleToolButton(lineButton, "line", canvas, statusBar));
         circleButton.addActionListener(e -> toggleToolButton(circleButton, "circle", canvas, statusBar));
@@ -92,6 +94,7 @@ public class Toolbar extends JPanel {
             button.setBackground(Color.WHITE);  // Reset to default color
             activeToolButton = null;
             statusBar.setText(tool.substring(0, 1).toUpperCase() + tool.substring(1) + " tool deselected");
+            ((Canvas) canvas).unselect();
             ((Canvas) canvas).setCurrentTool("select");  // Deselect tool
         } else {
             // Deactivate the currently active tool, if any

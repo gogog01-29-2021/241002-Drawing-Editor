@@ -11,7 +11,6 @@ public class MainApplication {
 
         LayerPanel layerPanel = new LayerPanel(layerManager);
         Canvas canvas = new Canvas(layerManager, statusBar, layerPanel);
-
         // Create and set up the main application frame
         JFrame frame = new JFrame("Shape Drawing Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

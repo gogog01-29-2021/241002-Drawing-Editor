@@ -46,10 +46,10 @@ public class SelectionRectangle extends BaseShape {
 
     private void highlightSelectedShapes(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
+        g2d.setColor(Color.GREEN);
         g2d.setStroke(new BasicStroke(2));
         for (BaseShape shape : selectedShapes) {
-            g2d.drawRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+            shape.highlight(g);
         }
     }
 

@@ -123,14 +123,14 @@ public class Canvas extends JPanel {
 
     private void handleMouseReleased(MouseEvent e) {
         if (selectionRectangle != null) {
-            List<BaseShape> selectedShapes = selectionRectangle.getSelectedShapes();
-            if (!selectedShapes.isEmpty()) {
-                // Do something with selected shapes, like copying them
-                for (BaseShape shape : selectedShapes) {
-                    // Copy or select shapes
-                    layerManager.getActiveLayer().addShape(shape.copy());
-                }
-            }
+//            List<BaseShape> selectedShapes = selectionRectangle.getSelectedShapes();
+//            if (!selectedShapes.isEmpty()) {
+//                // Do something with selected shapes, like copying them
+//                for (BaseShape shape : selectedShapes) {
+//                    // Copy or select shapes
+//                    layerManager.getActiveLayer().addShape(shape.copy());
+//                }
+//            }
             selectionRectangle = null; // Reset selection rectangle
         } else if (tempShape != null) {
             layerManager.getActiveLayer().addShape(tempShape);
@@ -164,6 +164,10 @@ public class Canvas extends JPanel {
         currentTool = tool;
     }
 
+    public void unselect() {
+        selectedShape = null;
+    }
+
     public void copyShape() {
         if (selectedShape != null) {
             tempShape = selectedShape.copy();
@@ -173,8 +177,9 @@ public class Canvas extends JPanel {
     public void pasteShape() {
         if (tempShape != null) {
             BaseShape copiedShape = tempShape.copy();
-            copiedShape.moveBy(10, 10);
+            tempShape = null;
             layerManager.getActiveLayer().addShape(copiedShape);
+            layerPanel.updateLayerList();
             updateStatusBar();
             repaint();
         }
