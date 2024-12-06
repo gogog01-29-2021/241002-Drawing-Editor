@@ -9,7 +9,7 @@ public class SelectionRectangle extends BaseShape {
     private final List<BaseShape> selectedShapes = new ArrayList<>();
 
     public SelectionRectangle(int x1, int y1, Color color) {
-        super(x1, y1, x1, y1, color);
+        super(-1, x1, y1, x1, y1, color);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x1;  // Initially, x2 and y2 will be the same as x1 and y1
@@ -33,6 +33,18 @@ public class SelectionRectangle extends BaseShape {
     public boolean contains(int x, int y) {
         return x >= Math.min(x1, x2) && x <= Math.max(x1, x2) &&
                 y >= Math.min(y1, y2) && y <= Math.max(y1, y2);
+    }
+
+    public int[] getSelectedShapeIndexes() {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < selectedShapes.size(); i++) {
+            indexes.add(i);
+        }
+        int[] result = new int[indexes.size()];
+        for (int i = 0; i < indexes.size(); i++) {
+            result[i] = indexes.get(i);
+        }
+        return result;
     }
 
     public void updateSelection(List<BaseShape> shapes) {

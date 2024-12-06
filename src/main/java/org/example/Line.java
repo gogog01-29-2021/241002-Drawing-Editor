@@ -3,8 +3,8 @@ package org.example;
 import java.awt.*;
 
 public class Line extends BaseShape {
-    public Line(int x1, int y1, int x2, int y2, Color color) {
-        super(x1, y1, x2, y2, color);
+    public Line(int id, int x1, int y1, int x2, int y2, Color color) {
+        super(id, x1, y1, x2, y2, color);
     }
 
     public String getName() {
@@ -32,7 +32,7 @@ public class Line extends BaseShape {
     }
     @Override
     public BaseShape copy() {
-        return new Line(x1, y1, x2, y2, color);
+        return new Line(id + 1, x1, y1, x2, y2, color);
     }
 
     @Override

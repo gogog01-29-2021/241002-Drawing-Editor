@@ -17,6 +17,7 @@ public class Canvas extends JPanel {
     private final JLabel statusBar;
     private final LayerPanel layerPanel;
     private SelectionRectangle selectionRectangle;
+    private int shapeCounter = 0;
 
     public Canvas(LayerManager layerManager, JLabel statusBar, LayerPanel layerPanel) {
         this.layerManager = layerManager;
@@ -81,6 +82,7 @@ public class Canvas extends JPanel {
                     selectedShape = shape;
                     lastX = e.getX();
                     lastY = e.getY();
+                    layerPanel.setSelected(shape.getId());
                     return; // Early exit if a shape is selected
                 }
             }
@@ -88,18 +90,13 @@ public class Canvas extends JPanel {
             // If no shape is selected, and a drawing tool is active, create a new shape
             if (currentTool != null) {
                 switch (currentTool) {
-                    case "line":
-                        tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-                        break;
-                    case "rectangle":
-                        tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-                        break;
-                    case "circle":
-                        tempShape = new Circle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-                        break;
-                    default:
-                        tempShape = null; // Ensure tempShape is null if the tool is unrecognized
-                        break;
+                    case "line" ->
+                            tempShape = new Line(shapeCounter, e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                    case "rectangle" ->
+                            tempShape = new Rectangle(shapeCounter, e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                    case "circle" ->
+                            tempShape = new Circle(shapeCounter, e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                    default -> tempShape = null; // Ensure tempShape is null if the tool is unrecognized
                 }
             }
         }
@@ -111,6 +108,7 @@ public class Canvas extends JPanel {
         if (selectionRectangle != null) {
             selectionRectangle.setEndCoordinates(e.getX(), e.getY());
             selectionRectangle.updateSelection(layerManager.getActiveLayer().getShapes());
+            layerPanel.setSelectedIndexes(selectionRectangle.getSelectedShapeIndexes());
         } else if (selectedShape != null) {
             selectedShape.moveBy(e.getX() - lastX, e.getY() - lastY);
             lastX = e.getX();
@@ -131,9 +129,11 @@ public class Canvas extends JPanel {
 //                    layerManager.getActiveLayer().addShape(shape.copy());
 //                }
 //            }
+            selectedShape = null;
             selectionRectangle = null; // Reset selection rectangle
         } else if (tempShape != null) {
             layerManager.getActiveLayer().addShape(tempShape);
+            shapeCounter++;
             layerPanel.updateLayerList();
             tempShape = null;
         }
@@ -180,6 +180,7 @@ public class Canvas extends JPanel {
             tempShape = null;
             layerManager.getActiveLayer().addShape(copiedShape);
             layerPanel.updateLayerList();
+            shapeCounter++;
             updateStatusBar();
             repaint();
         }
@@ -208,5 +209,10 @@ public class Canvas extends JPanel {
         } else {
             statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
         }
+    }
+
+    public void highlightSelectedObject(int index) {
+        selectedShape = layerManager.getActiveLayer().getShapes().get(index);
+        repaint();
     }
 }

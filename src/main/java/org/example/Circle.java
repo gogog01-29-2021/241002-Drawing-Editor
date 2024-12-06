@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Circle extends BaseShape {
 
-    public Circle(int x1, int y1, int x2, int y2, Color color) {
-        super(x1, y1, x2, y2, color);
+    public Circle(int id, int x1, int y1, int x2, int y2, Color color) {
+        super(id, x1, y1, x2, y2, color);
     }
 
     public String getName() {
@@ -58,7 +58,7 @@ public class Circle extends BaseShape {
 
     @Override
     public BaseShape copy() {
-        return new Circle(x1, y1, x2, y2, color);
+        return new Circle(id + 1, x1, y1, x2, y2, color);
     }
     @Override
     public String getBounds() {
