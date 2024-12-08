@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Rectangle extends BaseShape {
 
-    public Rectangle(int x1, int y1, int x2, int y2, Color color) {
-        super(x1, y1, x2, y2, color);
+    public Rectangle(int id, int x1, int y1, int x2, int y2, Color color) {
+        super(id, x1, y1, x2, y2, color);
     }
 
     public String getName() {
@@ -39,7 +39,7 @@ public class Rectangle extends BaseShape {
 
     @Override
     public BaseShape copy() {
-        return new Rectangle(x1, y1, x2, y2, color);
+        return new Rectangle(id + 1, x1, y1, x2, y2, color);
     }
     @Override
     public void highlight(Graphics g) {

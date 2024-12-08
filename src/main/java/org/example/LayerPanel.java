@@ -5,8 +5,9 @@ import java.awt.*;
 import java.util.List;
 
 public class LayerPanel extends JPanel {
-    private LayerManager layerManager;
-    private JList<String> layerList;
+    private final LayerManager layerManager;
+    private final JList<String> layerList;
+    private Canvas canvas;
 
     public LayerPanel(LayerManager layerManager) {
         this.layerManager = layerManager;
@@ -16,16 +17,29 @@ public class LayerPanel extends JPanel {
         setBackground(Color.DARK_GRAY);
 
         layerList = new JList<>(new DefaultListModel<>());
-        layerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        layerList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(layerList);
         add(scrollPane, BorderLayout.CENTER);
 
-//        layerList.addListSelectionListener(e -> {
-//            if (!e.getValueIsAdjusting()) {
-//                int index = layerList.getSelectedIndex();
-//                canvas.highlightSelectedObject(index);
-//            }
-//        });
+        layerList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int index = layerList.getSelectedIndex();
+                if (index < 0) return;
+                canvas.highlightSelectedObject(index);
+            }
+        });
+    }
+
+    public void setSelected(int index) {
+        layerList.setSelectedIndex(index);
+    }
+
+    public void setSelectedIndexes(int [] indexes) {
+        layerList.setSelectedIndices(indexes);
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
     }
 
     public void updateLayerList() {

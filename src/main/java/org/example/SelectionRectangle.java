@@ -1,40 +1,26 @@
 package org.example;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectionRectangle extends BaseShape {
     private int x1, y1, x2, y2;
+    private final List<BaseShape> selectedShapes = new ArrayList<>();
 
-    public SelectionRectangle(int x1, int y1) {
-        super(x1, y1, x1, y1, Color.GRAY); // Initially, the end coordinates are the same.
+    public SelectionRectangle(int x1, int y1, Color color) {
+        super(-1, x1, y1, x1, y1, color);
         this.x1 = x1;
         this.y1 = y1;
-    }
-
-    public String getName() {
-        return "DrawingRectangle";
+        this.x2 = x1;  // Initially, x2 and y2 will be the same as x1 and y1
+        this.y2 = y1;
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.GRAY);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(1)); // Thin stroke for dashed line
-        g2d.setColor(Color.GRAY);
-        g2d.setStroke(new BasicStroke(1));
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Set dashed line
-        float[] dashPattern = {10.0f, 5.0f}; // Dash length and gap length
-        g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dashPattern, 0.0f));
-
-        g2d.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-    }
-
-    @Override
-    public boolean contains(int x, int y) {
-        return x >= Math.min(x1, x2) && x <= Math.max(x1, x2) &&
-                y >= Math.min(y1, y2) && y <= Math.max(y1, y2);
+        g.setColor(color);
+        g.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+        highlightSelectedShapes(g);
     }
 
     @Override
@@ -44,25 +30,73 @@ public class SelectionRectangle extends BaseShape {
     }
 
     @Override
+    public boolean contains(int x, int y) {
+        return x >= Math.min(x1, x2) && x <= Math.max(x1, x2) &&
+                y >= Math.min(y1, y2) && y <= Math.max(y1, y2);
+    }
+
+    public int[] getSelectedShapeIndexes() {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < selectedShapes.size(); i++) {
+            indexes.add(i);
+        }
+        int[] result = new int[indexes.size()];
+        for (int i = 0; i < indexes.size(); i++) {
+            result[i] = indexes.get(i);
+        }
+        return result;
+    }
+
+    public void updateSelection(List<BaseShape> shapes) {
+        selectedShapes.clear();
+        for (BaseShape shape : shapes) {
+            if (this.contains(shape.getX(), shape.getY()) || this.contains(shape.getX() + shape.getWidth(), shape.getY() + shape.getHeight())) {
+                selectedShapes.add(shape);
+            }
+        }
+    }
+
+    private void highlightSelectedShapes(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.GREEN);
+        g2d.setStroke(new BasicStroke(2));
+        for (BaseShape shape : selectedShapes) {
+            shape.highlight(g);
+        }
+    }
+
+    public List<BaseShape> getSelectedShapes() {
+        return selectedShapes;
+    }
+
+    @Override
+    public String getName() {
+        return "SelectionRectangle";
+    }
+
+    @Override
     public void moveBy(int dx, int dy) {
-        this.x1 += dx;
-        this.y1 += dy;
-        this.x2 += dx;
-        this.y2 += dy;
+        // Not applicable for selection, as this is for dragging to select objects
     }
 
     @Override
     public BaseShape copy() {
-        return new SelectionRectangle(x1, y1);
+        return new SelectionRectangle(x1, y1, color);
     }
 
     @Override
     public void highlight(Graphics g) {
-        // Highlighting dashed rectangle isn't necessary, it is already visually distinct
+        // Selection rectangle is already highlighted in the draw method
     }
 
     @Override
     public String getBounds() {
-        return "Selection rectangle";
+        return "[" + x1 + ", " + y1 + ", " + Math.abs(x2 - x1) + ", " + Math.abs(y2 - y1) + "]";
+    }
+
+    // Set the initial coordinates where the user starts the drag
+    public void setStartCoordinates(int x, int y) {
+        this.x1 = x;
+        this.y1 = y;
     }
 }

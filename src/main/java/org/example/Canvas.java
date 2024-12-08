@@ -16,6 +16,8 @@ public class Canvas extends JPanel {
     private final LayerManager layerManager;
     private final JLabel statusBar;
     private final LayerPanel layerPanel;
+    private SelectionRectangle selectionRectangle;
+    private int shapeCounter = 0;
 
     public Canvas(LayerManager layerManager, JLabel statusBar, LayerPanel layerPanel) {
         this.layerManager = layerManager;
@@ -63,52 +65,77 @@ public class Canvas extends JPanel {
         if (tempShape != null) {
             tempShape.draw(g);  // This shows the placeholder line while dragging
         }
+
+        if (selectionRectangle != null) {
+            selectionRectangle.draw(g);
+        }
     }
 
     private void handleMousePressed(MouseEvent e) {
-        // Attempt to select a shape first
-        selectedShape = null;
-        for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
-            if (shape.contains(e.getX(), e.getY())) {
-                selectedShape = shape;
-                lastX = e.getX();
-                lastY = e.getY();
-                return;
+        if ("select".equals(currentTool)) {
+            selectionRectangle = new SelectionRectangle(e.getX(), e.getY(), Color.BLACK);
+        } else {
+            selectedShape = null;
+            // Loop through shapes in the active layer to check for selection
+            for (BaseShape shape : layerManager.getActiveLayer().getShapes()) {
+                if (shape.contains(e.getX(), e.getY())) {
+                    selectedShape = shape;
+                    lastX = e.getX();
+                    lastY = e.getY();
+                    layerPanel.setSelected(shape.getId());
+                    return; // Early exit if a shape is selected
+                }
             }
-        }
 
-        // If no shape was selected and a drawing tool is active, create a new shape
-        if (currentTool != null) {
-            if (currentTool.equals("line")) {
-                tempShape = new Line(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-            } else if (currentTool.equals("rectangle")) {
-                tempShape = new Rectangle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
-            } else if (currentTool.equals("circle")) {
-                tempShape = new Circle(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+            // If no shape is selected, and a drawing tool is active, create a new shape
+            if (currentTool != null) {
+                switch (currentTool) {
+                    case "line" ->
+                            tempShape = new Line(shapeCounter, e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                    case "rectangle" ->
+                            tempShape = new Rectangle(shapeCounter, e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                    case "circle" ->
+                            tempShape = new Circle(shapeCounter, e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                    default -> tempShape = null; // Ensure tempShape is null if the tool is unrecognized
+                }
             }
         }
-        repaint();
+        repaint(); // Trigger repaint to update the UI
     }
 
+
     private void handleMouseDragged(MouseEvent e) {
-        if (selectedShape != null) {
-            // Move the selected shape
+        if (selectionRectangle != null) {
+            selectionRectangle.setEndCoordinates(e.getX(), e.getY());
+            selectionRectangle.updateSelection(layerManager.getActiveLayer().getShapes());
+            layerPanel.setSelectedIndexes(selectionRectangle.getSelectedShapeIndexes());
+        } else if (selectedShape != null) {
             selectedShape.moveBy(e.getX() - lastX, e.getY() - lastY);
             lastX = e.getX();
             lastY = e.getY();
         } else if (tempShape != null) {
-            // Update the end coordinates for the temporary shape
             tempShape.setEndCoordinates(e.getX(), e.getY());
         }
         repaint();
     }
 
     private void handleMouseReleased(MouseEvent e) {
-        if (tempShape != null) {
+        if (selectionRectangle != null) {
+//            List<BaseShape> selectedShapes = selectionRectangle.getSelectedShapes();
+//            if (!selectedShapes.isEmpty()) {
+//                // Do something with selected shapes, like copying them
+//                for (BaseShape shape : selectedShapes) {
+//                    // Copy or select shapes
+//                    layerManager.getActiveLayer().addShape(shape.copy());
+//                }
+//            }
+            selectedShape = null;
+            selectionRectangle = null; // Reset selection rectangle
+        } else if (tempShape != null) {
             layerManager.getActiveLayer().addShape(tempShape);
+            shapeCounter++;
             layerPanel.updateLayerList();
             tempShape = null;
-            updateStatusBar();
         }
         repaint();
     }
@@ -137,6 +164,10 @@ public class Canvas extends JPanel {
         currentTool = tool;
     }
 
+    public void unselect() {
+        selectedShape = null;
+    }
+
     public void copyShape() {
         if (selectedShape != null) {
             tempShape = selectedShape.copy();
@@ -146,8 +177,10 @@ public class Canvas extends JPanel {
     public void pasteShape() {
         if (tempShape != null) {
             BaseShape copiedShape = tempShape.copy();
-            copiedShape.moveBy(10, 10);
+            tempShape = null;
             layerManager.getActiveLayer().addShape(copiedShape);
+            layerPanel.updateLayerList();
+            shapeCounter++;
             updateStatusBar();
             repaint();
         }
@@ -176,5 +209,10 @@ public class Canvas extends JPanel {
         } else {
             statusBar.setText(layerManager.getActiveLayer().getShapes().size() + " objects.");
         }
+    }
+
+    public void highlightSelectedObject(int index) {
+        selectedShape = layerManager.getActiveLayer().getShapes().get(index);
+        repaint();
     }
 }

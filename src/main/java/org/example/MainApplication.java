@@ -5,13 +5,13 @@ import java.io.IOException;
 
 public class MainApplication {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         JLabel statusBar = new JLabel("0 objects.");
         LayerManager layerManager = new LayerManager();
 
         LayerPanel layerPanel = new LayerPanel(layerManager);
         Canvas canvas = new Canvas(layerManager, statusBar, layerPanel);
-
+        layerPanel.setCanvas(canvas);
         // Create and set up the main application frame
         JFrame frame = new JFrame("Shape Drawing Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
