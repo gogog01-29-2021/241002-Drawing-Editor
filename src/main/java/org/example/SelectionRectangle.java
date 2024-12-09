@@ -15,10 +15,6 @@ public class SelectionRectangle extends BaseShape {
         this.y1 = y1;
         this.x2 = x1;  // Initially, x2 and y2 will be the same as x1 and y1
         this.y2 = y1;
-        int centerX = (x1 + x2) / 2;
-        int centerY = (y1 + y2) / 2;
-        this.mouseOffsetX = x1 - centerX;
-        this.mouseOffsetY = y1 - centerY;
     }
 
     @Override
@@ -32,6 +28,10 @@ public class SelectionRectangle extends BaseShape {
     public void setEndCoordinates(int x, int y) {
         this.x2 = x;
         this.y2 = y;
+        int centerX = (x1 + x2) / 2;
+        int centerY = (y1 + y2) / 2;
+        this.mouseOffsetX = x1 - centerX;
+        this.mouseOffsetY = y1 - centerY;
     }
 
     @Override
@@ -96,12 +96,10 @@ public class SelectionRectangle extends BaseShape {
     }
 
     public void updateWhileDragging(int mouseX, int mouseY) {
-        int newCenterX = mouseX - mouseOffsetX;
-        int newCenterY = mouseY - mouseOffsetY;
-
-        int deltaX = newCenterX - (x1 - Math.abs(x2 - x1) / 2);
-        int deltaY = newCenterY - (y1 + Math.abs(y2 - y1) / 2);
-
+        int rectCenterX = (x1 + x2) / 2;
+        int rectCenterY = (y1 + y2) / 2;
+        int deltaX = mouseX - rectCenterX;
+        int deltaY = mouseY - rectCenterY;
         x1 += deltaX;
         y1 += deltaY;
         x2 += deltaX;
