@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Canvas extends JPanel {
     private String currentTool = "select";
+    private boolean isShapesSelected = false;
     private BaseShape tempShape;
     private BaseShape selectedShape;
     private Color currentColor = BaseShape.getDefaultColor();
@@ -18,6 +19,7 @@ public class Canvas extends JPanel {
     private final LayerPanel layerPanel;
     private SelectionRectangle selectionRectangle;
     private int shapeCounter = 0;
+    private boolean isMoved = false;
 
     public Canvas(LayerManager layerManager, JLabel statusBar, LayerPanel layerPanel) {
         this.layerManager = layerManager;
@@ -73,7 +75,9 @@ public class Canvas extends JPanel {
 
     private void handleMousePressed(MouseEvent e) {
         if ("select".equals(currentTool)) {
-            selectionRectangle = new SelectionRectangle(e.getX(), e.getY(), Color.BLACK);
+            if (!isShapesSelected) {
+                selectionRectangle = new SelectionRectangle(e.getX(), e.getY(), Color.BLACK);
+            }
         } else {
             selectedShape = null;
             // Loop through shapes in the active layer to check for selection
@@ -105,7 +109,10 @@ public class Canvas extends JPanel {
 
 
     private void handleMouseDragged(MouseEvent e) {
-        if (selectionRectangle != null) {
+        if (isShapesSelected){
+            selectionRectangle.updateWhileDragging(e.getX(), e.getY());
+            isMoved = true;
+        } else if (selectionRectangle != null) {
             selectionRectangle.setEndCoordinates(e.getX(), e.getY());
             selectionRectangle.updateSelection(layerManager.getActiveLayer().getShapes());
             layerPanel.setSelectedIndexes(selectionRectangle.getSelectedShapeIndexes());
@@ -129,8 +136,17 @@ public class Canvas extends JPanel {
 //                    layerManager.getActiveLayer().addShape(shape.copy());
 //                }
 //            }
+            if (selectionRectangle.getSelectedShapes().size() > 0) {
+                isShapesSelected = true;
+            } else {
+                isShapesSelected = false;
+            }
+            if (isShapesSelected && isMoved) {
+                selectionRectangle = null;
+                isMoved = false;
+                isShapesSelected = false;
+            }
             selectedShape = null;
-            selectionRectangle = null; // Reset selection rectangle
         } else if (tempShape != null) {
             layerManager.getActiveLayer().addShape(tempShape);
             shapeCounter++;

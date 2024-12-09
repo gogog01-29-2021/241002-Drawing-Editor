@@ -8,12 +8,17 @@ public class SelectionRectangle extends BaseShape {
     private int x1, y1, x2, y2;
     private final List<BaseShape> selectedShapes = new ArrayList<>();
 
+    private int mouseOffsetX, mouseOffsetY;
     public SelectionRectangle(int x1, int y1, Color color) {
         super(-1, x1, y1, x1, y1, color);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x1;  // Initially, x2 and y2 will be the same as x1 and y1
         this.y2 = y1;
+        int centerX = (x1 + x2) / 2;
+        int centerY = (y1 + y2) / 2;
+        this.mouseOffsetX = x1 - centerX;
+        this.mouseOffsetY = y1 - centerY;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class SelectionRectangle extends BaseShape {
     public int[] getSelectedShapeIndexes() {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < selectedShapes.size(); i++) {
-            indexes.add(i);
+            indexes.add(selectedShapes.get(i).id);
         }
         int[] result = new int[indexes.size()];
         for (int i = 0; i < indexes.size(); i++) {
@@ -82,6 +87,26 @@ public class SelectionRectangle extends BaseShape {
     @Override
     public BaseShape copy() {
         return new SelectionRectangle(x1, y1, color);
+    }
+
+    public void moveSelectedShapes(int dx, int dy) {
+        for (BaseShape shape : selectedShapes) {
+            shape.moveBy(dx, dy);
+        }
+    }
+
+    public void updateWhileDragging(int mouseX, int mouseY) {
+        int newCenterX = mouseX - mouseOffsetX;
+        int newCenterY = mouseY - mouseOffsetY;
+
+        int deltaX = newCenterX - (x1 - Math.abs(x2 - x1) / 2);
+        int deltaY = newCenterY - (y1 + Math.abs(y2 - y1) / 2);
+
+        x1 += deltaX;
+        y1 += deltaY;
+        x2 += deltaX;
+        y2 += deltaY;
+        moveSelectedShapes(deltaX, deltaY);
     }
 
     @Override
