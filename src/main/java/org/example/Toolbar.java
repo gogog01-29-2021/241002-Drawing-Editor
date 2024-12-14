@@ -77,7 +77,7 @@ public class Toolbar extends JPanel {
             ((Canvas) canvas).copyShape();
         });
         addAction(pasteButton, () -> ((Canvas) canvas).pasteShape());
-        addAction(deleteButton, () -> statusBar.setText("Delete clicked"));
+        addAction(deleteButton, () -> ((Canvas) canvas).deleteShape());
         lineButton.addActionListener(e -> toggleToolButton(lineButton, "line", canvas, statusBar));
         circleButton.addActionListener(e -> toggleToolButton(circleButton, "circle", canvas, statusBar));
         rectangleButton.addActionListener(e -> toggleToolButton(rectangleButton, "rectangle", canvas, statusBar));

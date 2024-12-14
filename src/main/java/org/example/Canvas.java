@@ -128,19 +128,7 @@ public class Canvas extends JPanel {
 
     private void handleMouseReleased(MouseEvent e) {
         if (selectionRectangle != null) {
-//            List<BaseShape> selectedShapes = selectionRectangle.getSelectedShapes();
-//            if (!selectedShapes.isEmpty()) {
-//                // Do something with selected shapes, like copying them
-//                for (BaseShape shape : selectedShapes) {
-//                    // Copy or select shapes
-//                    layerManager.getActiveLayer().addShape(shape.copy());
-//                }
-//            }
-            if (selectionRectangle.getSelectedShapes().size() > 0) {
-                isShapesSelected = true;
-            } else {
-                isShapesSelected = false;
-            }
+            isShapesSelected = !selectionRectangle.getSelectedShapes().isEmpty();
             if (isShapesSelected && isMoved) {
                 selectionRectangle = null;
                 isMoved = false;
@@ -205,6 +193,7 @@ public class Canvas extends JPanel {
     public void deleteShape() {
         if (selectedShape != null) {
             layerManager.getActiveLayer().removeShape(selectedShape);
+            layerPanel.updateLayerList();
             selectedShape = null;
             updateStatusBar();
             repaint();
